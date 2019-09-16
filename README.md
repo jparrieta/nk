@@ -3,7 +3,7 @@ This repo includes the code for running some of the seminal papers on organizati
 
 Currently, it includes the code for creating landscapes a lá Levinthal (1997)
 
-The next code to be included is the local search logic. 
+The next code to be included is the local search logic after that Csaszar and Levinthal (2016).
 
 # run online [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jparrieta/nk/master)
 You can run this code directly by opening the following binder in your browser or clicking the button above.
