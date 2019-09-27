@@ -13139,6 +13139,7 @@ This function includes two variables N and K and outputs a NxN interdependency m
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -13192,10 +13193,10 @@ This function includes two variables N and K and outputs a NxN interdependency m
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[1, 0, 1, 1],
-       [1, 1, 1, 1],
-       [0, 1, 1, 1],
-       [0, 0, 0, 1]])</pre>
+<pre>array([[1, 1, 0, 1],
+       [0, 1, 1, 0],
+       [0, 1, 1, 0],
+       [0, 1, 1, 1]])</pre>
 </div>
 
 </div>
@@ -13278,39 +13279,30 @@ You see the code below and the outputs is the list of dictionaries of the depend
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;0b0&#39;: 0.9758056148188538,
-  &#39;0b1&#39;: 0.895913374259347,
-  &#39;0b10&#39;: 0.11253408270229015,
-  &#39;0b11&#39;: 0.9199425449690082,
-  &#39;0b100&#39;: 0.9060017613510333,
-  &#39;0b101&#39;: 0.8073997692479259,
-  &#39;0b110&#39;: 0.0839041730889476,
-  &#39;0b111&#39;: 0.2066202247295975},
- {&#39;0b0&#39;: 0.25694289947832616,
-  &#39;0b1&#39;: 0.5783208639018712,
-  &#39;0b10&#39;: 0.9056328783812567,
-  &#39;0b11&#39;: 0.0694592747215953,
-  &#39;0b100&#39;: 0.37793323408635215,
-  &#39;0b101&#39;: 0.8245352098422758,
-  &#39;0b110&#39;: 0.5051848961941592,
-  &#39;0b111&#39;: 0.08459886121552818,
-  &#39;0b1000&#39;: 0.8212904295944548,
-  &#39;0b1001&#39;: 0.7114509003660286,
-  &#39;0b1010&#39;: 0.9086950655654895,
-  &#39;0b1011&#39;: 0.5223563304216662,
-  &#39;0b1100&#39;: 0.22981207225638545,
-  &#39;0b1101&#39;: 0.1666350142112598,
-  &#39;0b1110&#39;: 0.11593594095224957,
-  &#39;0b1111&#39;: 0.7478934783920103},
- {&#39;0b0&#39;: 0.6423681639584014,
-  &#39;0b1&#39;: 0.8419060098174804,
-  &#39;0b10&#39;: 0.08548467365052204,
-  &#39;0b11&#39;: 0.5680719618592532,
-  &#39;0b100&#39;: 0.6310176360186911,
-  &#39;0b101&#39;: 0.1816301034598875,
-  &#39;0b110&#39;: 0.9107369263171388,
-  &#39;0b111&#39;: 0.9246782529226188},
- {&#39;0b0&#39;: 0.3101098162671001, &#39;0b1&#39;: 0.6387455264447726}]</pre>
+<pre>[{&#39;0b0&#39;: 0.4901935594280574,
+  &#39;0b1&#39;: 0.17360573688357983,
+  &#39;0b10&#39;: 0.04216873664150156,
+  &#39;0b11&#39;: 0.9272187059278515,
+  &#39;0b100&#39;: 0.7169848596231495,
+  &#39;0b101&#39;: 0.8308316702512346,
+  &#39;0b110&#39;: 0.15434241410247151,
+  &#39;0b111&#39;: 0.39812252395017234},
+ {&#39;0b0&#39;: 0.48625539090232295,
+  &#39;0b1&#39;: 0.6900427042649496,
+  &#39;0b10&#39;: 0.360379480558197,
+  &#39;0b11&#39;: 0.5622654913522256},
+ {&#39;0b0&#39;: 0.24214975137585903,
+  &#39;0b1&#39;: 0.21641171079895438,
+  &#39;0b10&#39;: 0.3840671562178297,
+  &#39;0b11&#39;: 0.043281246699361065},
+ {&#39;0b0&#39;: 0.15948034949770618,
+  &#39;0b1&#39;: 0.564731888080491,
+  &#39;0b10&#39;: 0.1309241258778555,
+  &#39;0b11&#39;: 0.31037880274071994,
+  &#39;0b100&#39;: 0.018383262489677143,
+  &#39;0b101&#39;: 0.3910283732038552,
+  &#39;0b110&#39;: 0.7664895746964873,
+  &#39;0b111&#39;: 0.5067037510106012}]</pre>
 </div>
 
 </div>
@@ -13366,7 +13358,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0b1010&#39;</pre>
+<pre>&#39;0b1&#39;</pre>
 </div>
 
 </div>
@@ -13412,7 +13404,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;0b100&#39;, &#39;0b1010&#39;, &#39;0b101&#39;, &#39;0b1&#39;]</pre>
+<pre>[&#39;0b110&#39;, &#39;0b1&#39;, &#39;0b1&#39;, &#39;0b101&#39;]</pre>
 </div>
 
 </div>
@@ -13459,7 +13451,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.6587681142052957</pre>
+<pre>0.3629563005925577</pre>
 </div>
 
 </div>
@@ -13520,7 +13512,8 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="4.2-Calculate-Landscape">4.2 Calculate Landscape<a class="anchor-link" href="#4.2-Calculate-Landscape">&#182;</a></h3><p>Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dictionary with the payoffs for each policy. Below you can see an example of the full landscape.</p>
+<h3 id="4.2-Calculate-Landscape">4.2 Calculate Landscape<a class="anchor-link" href="#4.2-Calculate-Landscape">&#182;</a></h3><p>Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dictionary with the payoffs for each policy and then puts them together into one dataframe we can use later while searching.<br>
+Below you can see an example of the full landscape.</p>
 
 </div>
 </div>
@@ -13531,11 +13524,11 @@ Below you see an example of this function for the same policy we have used in th
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">):</span>
-    <span class="n">lands</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">lands</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">dep_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">):</span> <span class="n">lands</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">))]</span> <span class="o">=</span> <span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">lands</span><span class="p">)</span>
-
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">):</span> 
+        <span class="n">lands</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;int_pol&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">)),</span> <span class="s1">&#39;payoff&#39;</span><span class="p">:</span><span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)})</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lands</span><span class="p">))</span>
 <span class="n">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
 </pre></div>
 
@@ -13553,24 +13546,130 @@ Below you see an example of this function for the same policy we have used in th
 
 
 
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;[0, 0, 0, 0]&#39;: 0.5463066236306704,
- &#39;[0, 0, 0, 1]&#39;: 0.7492638383522379,
- &#39;[0, 0, 1, 0]&#39;: 0.2215154516765661,
- &#39;[0, 0, 1, 1]&#39;: 0.4657996745268111,
- &#39;[0, 1, 0, 0]&#39;: 0.7583635798211728,
- &#39;[0, 1, 0, 1]&#39;: 0.6587681142052957,
- &#39;[0, 1, 1, 0]&#39;: 0.37397518925570067,
- &#39;[0, 1, 1, 1]&#39;: 0.4408159733521471,
- &#39;[1, 0, 0, 0]&#39;: 0.6066780545966799,
- &#39;[1, 0, 0, 1]&#39;: 0.6971534580193546,
- &#39;[1, 0, 1, 0]&#39;: 0.5350180611822266,
- &#39;[1, 0, 1, 1]&#39;: 0.4806844229256922,
- &#39;[1, 1, 0, 0]&#39;: 0.5293471187663807,
- &#39;[1, 1, 0, 1]&#39;: 0.537532932393563,
- &#39;[1, 1, 1, 0]&#39;: 0.47068079607772245,
- &#39;[1, 1, 1, 1]&#39;: 0.6294843706222497}</pre>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>int_pol</th>
+      <th>payoff</th>
+      <th>policy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0.344520</td>
+      <td>[0, 0, 0, 0]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0.365943</td>
+      <td>[0, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>0.341391</td>
+      <td>[0, 0, 1, 0]</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>0.556980</td>
+      <td>[0, 0, 1, 1]</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>0.378339</td>
+      <td>[0, 1, 0, 0]</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>0.362956</td>
+      <td>[0, 1, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>0.239524</td>
+      <td>[0, 1, 1, 0]</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7</td>
+      <td>0.316648</td>
+      <td>[0, 1, 1, 1]</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>8</td>
+      <td>0.265373</td>
+      <td>[1, 0, 0, 0]</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9</td>
+      <td>0.394405</td>
+      <td>[1, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10</td>
+      <td>0.262244</td>
+      <td>[1, 0, 1, 0]</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>11</td>
+      <td>0.585442</td>
+      <td>[1, 0, 1, 1]</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12</td>
+      <td>0.599601</td>
+      <td>[1, 1, 0, 0]</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>13</td>
+      <td>0.423901</td>
+      <td>[1, 1, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>14</td>
+      <td>0.460786</td>
+      <td>[1, 1, 1, 0]</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>15</td>
+      <td>0.377593</td>
+      <td>[1, 1, 1, 1]</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -13582,228 +13681,21 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Creating-a-Landscape-from-Scratch.">Creating a Landscape from Scratch.<a class="anchor-link" href="#Creating-a-Landscape-from-Scratch.">&#182;</a></h2><p>Below you can see the code to generate a landscape from scratch. This landscape should be different from the ones shown before.</p>
-
+<h2 id="Search-in-a-Rugged-Landscape">Search in a Rugged Landscape<a class="anchor-link" href="#Search-in-a-Rugged-Landscape">&#182;</a></h2><p>Below I introduce the code for searching in NK landscape, equivalent to the one from Levithnal (1997)
+For this I create a agent class. The agent is very simple, it just knows the percentage of time it can make a long jump. 
+Levinthal includes other aspects like myopia but this is not in the code at the moment.</p>
+<h3 id="Agent">Agent<a class="anchor-link" href="#Agent">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">dep_mat</span> <span class="o">=</span> <span class="n">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<span class="n">fit_con</span> <span class="o">=</span> <span class="n">fitness</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-<span class="n">lands</span> <span class="o">=</span> <span class="n">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
-<span class="n">lands</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;[0, 0, 0, 0]&#39;: 0.2768063565363619,
- &#39;[0, 0, 0, 1]&#39;: 0.41928522590947304,
- &#39;[0, 0, 1, 0]&#39;: 0.5489353428055544,
- &#39;[0, 0, 1, 1]&#39;: 0.6312220267589057,
- &#39;[0, 1, 0, 0]&#39;: 0.49369033685326724,
- &#39;[0, 1, 0, 1]&#39;: 0.6781641104018514,
- &#39;[0, 1, 1, 0]&#39;: 0.3392780225926444,
- &#39;[0, 1, 1, 1]&#39;: 0.7386607475460263,
- &#39;[1, 0, 0, 0]&#39;: 0.36016126129086057,
- &#39;[1, 0, 0, 1]&#39;: 0.5511422501839423,
- &#39;[1, 0, 1, 0]&#39;: 0.5642915068326426,
- &#39;[1, 0, 1, 1]&#39;: 0.7108371680730846,
- &#39;[1, 1, 0, 0]&#39;: 0.369955725154123,
- &#39;[1, 1, 0, 1]&#39;: 0.42817561893717504,
- &#39;[1, 1, 1, 0]&#39;: 0.2620008302375219,
- &#39;[1, 1, 1, 1]&#39;: 0.49633078572146616}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">learn</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">,</span> <span class="n">n_turns</span><span class="p">,</span> <span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])))</span>
-    <span class="n">pol2</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">]</span>
-    <span class="n">pay2</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">]</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">sim_pol</span> <span class="o">=</span> <span class="p">[</span><span class="n">pol2</span><span class="p">]</span>
-    <span class="n">sim_pay</span> <span class="o">=</span> <span class="p">[</span><span class="n">pay2</span><span class="p">]</span>
-    <span class="n">final</span> <span class="o">=</span> <span class="n">n_turns</span>
-    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_turns</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">pay2</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pi</span><span class="p">)),</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pol</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">pay2</span> <span class="o">&lt;</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]:</span>
-                    <span class="n">pol2</span> <span class="o">=</span> <span class="n">neighbors_pol</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                    <span class="n">pay2</span> <span class="o">=</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                    <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol2</span><span class="p">)</span>
-                    <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay2</span><span class="p">)</span>
-                    <span class="k">break</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">long_jump</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">long_jump</span><span class="p">]):</span>
-                <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])))</span>
-                <span class="n">pol3</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">][</span><span class="n">lon</span><span class="p">]</span>
-                <span class="n">pay3</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">][</span><span class="n">lon</span><span class="p">]</span>
-                <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol3</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pi</span><span class="p">)),</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pol</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sim_pay</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]:</span>
-                        <span class="n">pol2</span> <span class="o">=</span> <span class="n">neighbors_pol</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                        <span class="n">pay2</span> <span class="o">=</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                        <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                        <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol2</span><span class="p">)</span>
-                        <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay2</span><span class="p">)</span>
-                        <span class="k">break</span>
-                    <span class="k">elif</span> <span class="n">pay3</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">sim_pay</span><span class="p">):</span>
-                        <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol3</span><span class="p">)</span>
-                        <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay3</span><span class="p">)</span>
-                        <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">final</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">final</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">pay2</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">]):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sucess in iteration: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">final</span><span class="p">))</span>                    
-    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">sim_pol</span><span class="p">,</span> <span class="n">payoff</span> <span class="o">=</span> <span class="n">sim_pay</span><span class="p">)))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Run code</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">n_turns</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">dep_mat</span> <span class="o">=</span> <span class="n">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<span class="n">epis</span> <span class="o">=</span> <span class="n">fitness</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-<span class="n">truth_table</span> <span class="o">=</span> <span class="n">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">epis</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interaction Matrix&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">truth_table</span><span class="p">,</span> <span class="n">n_turns</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Learning Results&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max pi: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Full Truth Table&quot;</span><span class="p">)</span>
-<span class="c1">#truth_table_p</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Interaction Matrix
-[[1 1 0 1 0 0]
- [0 1 0 1 0 0]
- [0 0 1 0 0 0]
- [0 1 0 1 0 0]
- [0 0 0 0 1 1]
- [1 0 1 1 0 1]]
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-11-6d486f5ffe9b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">     10</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;Interaction Matrix&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     11</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span>dep_mat<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">---&gt; 12</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>results <span class="ansi-yellow-intense-fg ansi-bold">=</span> learn<span class="ansi-yellow-intense-fg ansi-bold">(</span>truth_table<span class="ansi-yellow-intense-fg ansi-bold">,</span> n_turns<span class="ansi-yellow-intense-fg ansi-bold">,</span> long_jump<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     13</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;Learning Results&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     14</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span>results<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-10-1840b101a144&gt;</span> in <span class="ansi-cyan-fg">learn</span><span class="ansi-blue-intense-fg ansi-bold">(truth_table, n_turns, long_jump)</span>
-<span class="ansi-green-fg">      1</span> <span class="ansi-green-intense-fg ansi-bold">def</span> learn<span class="ansi-yellow-intense-fg ansi-bold">(</span>truth_table<span class="ansi-yellow-intense-fg ansi-bold">,</span> n_turns<span class="ansi-yellow-intense-fg ansi-bold">,</span> long_jump <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-cyan-intense-fg ansi-bold">0.1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 2</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>start <span class="ansi-yellow-intense-fg ansi-bold">=</span> np<span class="ansi-yellow-intense-fg ansi-bold">.</span>random<span class="ansi-yellow-intense-fg ansi-bold">.</span>choice<span class="ansi-yellow-intense-fg ansi-bold">(</span>range<span class="ansi-yellow-intense-fg ansi-bold">(</span>len<span class="ansi-yellow-intense-fg ansi-bold">(</span>truth_table<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;policy&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      3</span>     pol2 <span class="ansi-yellow-intense-fg ansi-bold">=</span> truth_table<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;policy&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span>start<span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">      4</span>     pay2 <span class="ansi-yellow-intense-fg ansi-bold">=</span> truth_table<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;payoff&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span>start<span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">      5</span>     distance <span class="ansi-yellow-intense-fg ansi-bold">=</span> pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>DataFrame<span class="ansi-yellow-intense-fg ansi-bold">(</span>abs<span class="ansi-yellow-intense-fg ansi-bold">(</span>pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>DataFrame<span class="ansi-yellow-intense-fg ansi-bold">(</span>truth_table<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;policy&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">-</span>pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>Series<span class="ansi-yellow-intense-fg ansi-bold">(</span>pol2<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>sum<span class="ansi-yellow-intense-fg ansi-bold">(</span>axis<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;policy&#39;</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[146]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-
-<span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">dep_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">prob</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">prob</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">make_epistatics</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">):</span>
-    <span class="n">epis</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)):</span> 
-        <span class="n">epi_key</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span> <span class="n">epi_key</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>    
-        <span class="n">epi_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-        <span class="n">epis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">epi_key</span><span class="p">,</span><span class="n">epi_val</span><span class="p">)))</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">epis</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_row</span><span class="p">):</span>
     <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13817,12 +13709,6 @@ Below you see an example of this function for the same policy we have used in th
     <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)):</span> <span class="n">int_mat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
-    
-<span class="k">def</span> <span class="nf">payoff</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">,</span><span class="n">epis</span><span class="p">):</span>
-    <span class="n">pay</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)):</span> <span class="n">pay</span> <span class="o">+=</span> <span class="n">epis</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pay</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">int2list</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">pol_str</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
@@ -13830,84 +13716,205 @@ Below you see an example of this function for the same policy we have used in th
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">policy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span><span class="o">+</span><span class="n">policy</span>
     <span class="k">return</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">):</span>
-    <span class="n">lands</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">dep_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">):</span> <span class="n">lands</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">))]</span> <span class="o">=</span> <span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">lands</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">landscape</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">calc_landscape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">land</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span> 
+            <span class="n">land</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;int_pol&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)),</span> 
+                         <span class="s1">&#39;payoff&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lands</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">land</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">prob</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">prob</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span> 
+            <span class="n">epi_row</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span> <span class="n">epi_row</span><span class="p">[</span><span class="nb">bin</span><span class="p">(</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epi_row</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">payoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
+        <span class="n">pay</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)):</span> <span class="n">pay</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">pay</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_dependencies</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_landscape</span><span class="p">()</span>   
 
-<span class="k">def</span> <span class="nf">learn</span><span class="p">(</span><span class="n">truth_table</span><span class="p">,</span> <span class="n">n_turns</span><span class="p">,</span> <span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])))</span>
-    <span class="n">pol2</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">]</span>
-    <span class="n">pay2</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">]</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">sim_pol</span> <span class="o">=</span> <span class="p">[</span><span class="n">pol2</span><span class="p">]</span>
-    <span class="n">sim_pay</span> <span class="o">=</span> <span class="p">[</span><span class="n">pay2</span><span class="p">]</span>
-    <span class="n">final</span> <span class="o">=</span> <span class="n">n_turns</span>
-    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_turns</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">pay2</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pi</span><span class="p">)),</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pol</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">pay2</span> <span class="o">&lt;</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]:</span>
-                    <span class="n">pol2</span> <span class="o">=</span> <span class="n">neighbors_pol</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                    <span class="n">pay2</span> <span class="o">=</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                    <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol2</span><span class="p">)</span>
-                    <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay2</span><span class="p">)</span>
-                    <span class="k">break</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">long_jump</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">long_jump</span><span class="p">]):</span>
-                <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])))</span>
-                <span class="n">pol3</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">][</span><span class="n">lon</span><span class="p">]</span>
-                <span class="n">pay3</span> <span class="o">=</span> <span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">][</span><span class="n">lon</span><span class="p">]</span>
-                <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol3</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pi</span><span class="p">)),</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">neighbors_pol</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sim_pay</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]:</span>
-                        <span class="n">pol2</span> <span class="o">=</span> <span class="n">neighbors_pol</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                        <span class="n">pay2</span> <span class="o">=</span> <span class="n">neighbors_pi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
-                        <span class="n">distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pol2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                        <span class="n">neighbors_pol</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;policy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">neighbors_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">distance</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol2</span><span class="p">)</span>
-                        <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay2</span><span class="p">)</span>
-                        <span class="k">break</span>
-                    <span class="k">elif</span> <span class="n">pay3</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">sim_pay</span><span class="p">):</span>
-                        <span class="n">sim_pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol3</span><span class="p">)</span>
-                        <span class="n">sim_pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pay3</span><span class="p">)</span>
-                        <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">final</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">final</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">pay2</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">]):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sucess in iteration: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">final</span><span class="p">))</span>                    
-    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">sim_pol</span><span class="p">,</span> <span class="n">payoff</span> <span class="o">=</span> <span class="n">sim_pay</span><span class="p">)))</span>
+<span class="k">class</span> <span class="nc">agent</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_jump</span> <span class="o">=</span> <span class="n">long_jump</span>
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">):</span>
+        <span class="n">current_row</span> <span class="o">=</span> <span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),:]</span>
+        <span class="n">global_max</span> <span class="o">=</span> <span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">),:]</span>
+        <span class="n">log_short</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_row</span><span class="p">]</span>
+        <span class="n">log_long</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_row</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;Walk&quot;</span><span class="p">,</span> <span class="s2">&quot;Jump&quot;</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">long_jump</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">])</span> <span class="o">==</span> <span class="s2">&quot;Jump&quot;</span><span class="p">:</span> 
+                <span class="n">proposed_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_row</span><span class="o">.</span><span class="n">policy</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">randomized_neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">proposed_row</span> <span class="ow">in</span> <span class="n">randomized_neighbors</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">current_row</span><span class="o">.</span><span class="n">payoff</span><span class="p">:</span> <span class="k">break</span> <span class="c1"># weird but works</span>
+            <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">,:])</span>
+            <span class="k">if</span> <span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">current_row</span><span class="o">.</span><span class="n">payoff</span><span class="p">:</span>
+                <span class="n">current_row</span> <span class="o">=</span> <span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">,:]</span>
+                <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_row</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">==</span> <span class="n">global_max</span><span class="o">.</span><span class="n">int_pol</span><span class="p">:</span> <span class="k">break</span>
+        <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">global_max</span><span class="p">)</span> <span class="c1"># add global max for comparison later on</span>
+        <span class="n">reached_max</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">current_row</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">==</span> <span class="n">global_max</span><span class="o">.</span><span class="n">int_pol</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">reached_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_short</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_long</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">log_short</span><span class="p">),</span> <span class="mi">0</span><span class="p">])</span><span class="c1">#log_long])</span>
+    
+<span class="k">def</span> <span class="nf">run_simulation</span><span class="p">(</span><span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">):</span>
+        <span class="n">all_reached_max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_num_steps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_num_trials</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span>
+            <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> <span class="c1"># 0.6 of 29 second</span>
+            <span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">o_short</span><span class="p">,</span> <span class="n">o_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
+            <span class="n">all_reached_max</span> <span class="o">+=</span> <span class="n">reached_max</span>
+            <span class="n">all_num_steps</span> <span class="o">+=</span> <span class="n">n_step</span>
+            <span class="n">all_num_trials</span> <span class="o">+=</span> <span class="n">n_trial</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">])</span>
+</pre></div>
 
-<span class="c1"># Run code</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run-Simulation">Run Simulation<a class="anchor-link" href="#Run-Simulation">&#182;</a></h2><p>Having the agent and the environment we can create the simulation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">n_turns</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">dep_mat</span> <span class="o">=</span> <span class="n">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<span class="n">epis</span> <span class="o">=</span> <span class="n">make_epistatics</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
+<span class="n">num_periods</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_reps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">Environment</span> <span class="o">=</span> <span class="n">landscape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>    
+<span class="n">Alice</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">output_short</span><span class="p">,</span> <span class="n">output_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">)</span>
+<span class="n">output_short</span>
+</pre></div>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">pol</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">pay</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="n">int2list</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
-        <span class="n">pol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-        <span class="n">pay</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">payoff</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">epis</span><span class="p">))</span>
-<span class="n">truth_table_p</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">),</span><span class="n">pol</span><span class="p">,</span><span class="n">pay</span><span class="p">)</span>
-<span class="n">truth_table</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="n">pol</span><span class="p">,</span> <span class="n">payoff</span> <span class="o">=</span> <span class="n">pay</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interaction Matrix&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">truth_table</span><span class="p">,</span> <span class="n">n_turns</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Learning Results&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max pi: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[</span><span class="s2">&quot;payoff&quot;</span><span class="p">])))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Full Truth Table&quot;</span><span class="p">)</span>
-<span class="c1">#truth_table_p</span>
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[147]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>int_pol</th>
+      <th>payoff</th>
+      <th>policy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0.396579</td>
+      <td>[0, 0, 0, 0, 0, 0]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0.478986</td>
+      <td>[0, 0, 0, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>17</td>
+      <td>0.532777</td>
+      <td>[0, 1, 0, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>49</td>
+      <td>0.781835</td>
+      <td>[1, 1, 0, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>57</td>
+      <td>0.793122</td>
+      <td>[1, 1, 1, 0, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>57</td>
+      <td>0.793122</td>
+      <td>[1, 1, 1, 0, 0, 1]</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[148]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">all_reached_max</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_num_steps</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_num_trials</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13924,24 +13931,10 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Interaction Matrix
-[[1 0 0 0 1 1]
- [0 1 1 0 0 1]
- [1 1 1 1 1 0]
- [0 1 1 1 0 0]
- [0 1 1 0 1 0]
- [0 0 1 0 0 1]]
-Sucess in iteration: 29
-Learning Results
-               policy    payoff
-0  [1, 1, 1, 1, 0, 1]  0.538505
-1  [1, 1, 1, 0, 0, 1]  0.618016
-2  [1, 1, 1, 0, 1, 1]  0.636246
-3  [0, 1, 1, 0, 1, 1]  0.642834
-4  [0, 0, 0, 1, 1, 0]  0.656523
-5  [0, 0, 0, 1, 1, 1]  0.678759
-Max pi: 0.6787585152454918
-Full Truth Table
+<pre>74.0
+5.29
+39.87
+17.4
 </pre>
 </div>
 </div>
@@ -13952,10 +13945,13 @@ Full Truth Table
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[149]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">truth_table</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13968,144 +13964,28 @@ Full Truth Table
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;policy&#39;: [[0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1],
-  [0, 0, 0, 0, 1, 0],
-  [0, 0, 0, 0, 1, 1],
-  [0, 0, 0, 1, 0, 0],
-  [0, 0, 0, 1, 0, 1],
-  [0, 0, 0, 1, 1, 0],
-  [0, 0, 0, 1, 1, 1],
-  [0, 0, 1, 0, 0, 0],
-  [0, 0, 1, 0, 0, 1],
-  [0, 0, 1, 0, 1, 0],
-  [0, 0, 1, 0, 1, 1],
-  [0, 0, 1, 1, 0, 0],
-  [0, 0, 1, 1, 0, 1],
-  [0, 0, 1, 1, 1, 0],
-  [0, 0, 1, 1, 1, 1],
-  [0, 1, 0, 0, 0, 0],
-  [0, 1, 0, 0, 0, 1],
-  [0, 1, 0, 0, 1, 0],
-  [0, 1, 0, 0, 1, 1],
-  [0, 1, 0, 1, 0, 0],
-  [0, 1, 0, 1, 0, 1],
-  [0, 1, 0, 1, 1, 0],
-  [0, 1, 0, 1, 1, 1],
-  [0, 1, 1, 0, 0, 0],
-  [0, 1, 1, 0, 0, 1],
-  [0, 1, 1, 0, 1, 0],
-  [0, 1, 1, 0, 1, 1],
-  [0, 1, 1, 1, 0, 0],
-  [0, 1, 1, 1, 0, 1],
-  [0, 1, 1, 1, 1, 0],
-  [0, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0],
-  [1, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 1, 0],
-  [1, 0, 0, 0, 1, 1],
-  [1, 0, 0, 1, 0, 0],
-  [1, 0, 0, 1, 0, 1],
-  [1, 0, 0, 1, 1, 0],
-  [1, 0, 0, 1, 1, 1],
-  [1, 0, 1, 0, 0, 0],
-  [1, 0, 1, 0, 0, 1],
-  [1, 0, 1, 0, 1, 0],
-  [1, 0, 1, 0, 1, 1],
-  [1, 0, 1, 1, 0, 0],
-  [1, 0, 1, 1, 0, 1],
-  [1, 0, 1, 1, 1, 0],
-  [1, 0, 1, 1, 1, 1],
-  [1, 1, 0, 0, 0, 0],
-  [1, 1, 0, 0, 0, 1],
-  [1, 1, 0, 0, 1, 0],
-  [1, 1, 0, 0, 1, 1],
-  [1, 1, 0, 1, 0, 0],
-  [1, 1, 0, 1, 0, 1],
-  [1, 1, 0, 1, 1, 0],
-  [1, 1, 0, 1, 1, 1],
-  [1, 1, 1, 0, 0, 0],
-  [1, 1, 1, 0, 0, 1],
-  [1, 1, 1, 0, 1, 0],
-  [1, 1, 1, 0, 1, 1],
-  [1, 1, 1, 1, 0, 0],
-  [1, 1, 1, 1, 0, 1],
-  [1, 1, 1, 1, 1, 0],
-  [1, 1, 1, 1, 1, 1]],
- &#39;payoff&#39;: [0.43988198994393335,
-  0.3939729704934676,
-  0.5347558110384643,
-  0.5569916870123184,
-  0.5232054258980872,
-  0.4772964064476214,
-  0.6565226392716377,
-  0.6787585152454918,
-  0.5805075590149364,
-  0.5178095548108927,
-  0.6118012295047943,
-  0.6172481207250706,
-  0.6209338615419109,
-  0.5582358573378672,
-  0.6327166153577481,
-  0.6381635065780245,
-  0.26284033974072274,
-  0.40343529214991536,
-  0.28368544277578905,
-  0.4924252906093016,
-  0.22040548061458692,
-  0.36100043302377954,
-  0.3153228445669832,
-  0.5240626924004956,
-  0.5227249939780418,
-  0.48179167293056585,
-  0.6156219947469117,
-  0.6428335691237557,
-  0.5829703577892633,
-  0.5420370367417873,
-  0.6085686725233423,
-  0.6357802469001863,
-  0.5051734234573706,
-  0.5349307029926871,
-  0.6126409837998048,
-  0.6026758818268347,
-  0.47687891914878344,
-  0.5066361986840999,
-  0.6350856022979928,
-  0.6251205003250228,
-  0.5012031014108768,
-  0.5141713961926152,
-  0.638839862445129,
-  0.612085775718581,
-  0.5441939335900609,
-  0.5571622283717994,
-  0.5875986778972088,
-  0.5608445911706607,
-  0.2772276589342986,
-  0.49348891032927344,
-  0.2918388608941685,
-  0.4683777307808568,
-  0.2531649829168687,
-  0.46942623431184355,
-  0.31315576094124636,
-  0.4896946308279347,
-  0.5832831966356082,
-  0.6180161745739146,
-  0.6412354688396898,
-  0.6362460652697095,
-  0.5037724874046025,
-  0.5385054653429087,
-  0.6651440425331483,
-  0.660154638963168]}</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>7.3
+</pre>
+</div>
 </div>
 
 </div>
+</div>
 
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
 </div>
 </div>
 
