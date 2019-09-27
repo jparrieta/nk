@@ -20,6 +20,7 @@
 
 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 def create_dependencies(n, k):
@@ -179,133 +180,34 @@ int2list(5, 4)
 
 
 # ### 4.2 Calculate Landscape
-# Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dictionary with the payoffs for each policy. Below you can see an example of the full landscape. 
+# Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dictionary with the payoffs for each policy and then puts them together into one dataframe we can use later while searching.   
+# Below you can see an example of the full landscape. 
 
 # In[8]:
 
 
 def calc_landscape(dep_mat, fit_con):
-    lands = {}
+    lands = []
     n = dep_mat.shape[0]
-    for i in range(2**n): lands[str(int2list(i,n))] = payoff(int2list(i,n), dep_mat, fit_con)
-    return(lands)
-
+    for i in range(2**n): 
+        lands.append({'int_pol':i, 'policy': np.asarray(int2list(i,n)), 'payoff':payoff(int2list(i,n), dep_mat, fit_con)})
+    return(pd.DataFrame(lands))
 calc_landscape(dep_mat, fit_con)
 
 
-# ## Creating a Landscape from Scratch. 
-# Below you can see the code to generate a landscape from scratch. This landscape should be different from the ones shown before.
+# ## Search in a Rugged Landscape
+# Below I introduce the code for searching in NK landscape, equivalent to the one from Levithnal (1997)
+# For this I create a agent class. The agent is very simple, it just knows the percentage of time it can make a long jump. 
+# Levinthal includes other aspects like myopia but this is not in the code at the moment. 
 # 
-# 
+# ### Agent
 
-# In[9]:
-
-
-n = 4
-k = 2
-dep_mat = create_dependencies(n, k)
-fit_con = fitness(dep_mat)
-lands = calc_landscape(dep_mat, fit_con)
-lands
-
-
-# In[10]:
-
-
-def learn(dep_mat, fit_con, n_turns, long_jump = 0.1):
-    start = np.random.choice(range(len(truth_table["policy"])))
-    pol2 = truth_table["policy"][start]
-    pay2 = truth_table["payoff"][start]
-    distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-    neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-    neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-    sim_pol = [pol2]
-    sim_pay = [pay2]
-    final = n_turns
-    for iteration in range(n_turns):
-        if pay2 < max(truth_table["payoff"]):
-            for trial in np.random.choice(range(len(neighbors_pi)),size=len(neighbors_pol),replace=False):
-                if pay2 < neighbors_pi.iloc[trial]:
-                    pol2 = neighbors_pol.iloc[trial]
-                    pay2 = neighbors_pi.iloc[trial]
-                    distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-                    neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                    neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                    sim_pol.append(pol2)
-                    sim_pay.append(pay2)
-                    break
-            if np.random.choice([True,False], p = [long_jump,1-long_jump]):
-                lon = np.random.choice(range(len(truth_table["policy"])))
-                pol3 = truth_table["policy"][lon]
-                pay3 = truth_table["payoff"][lon]
-                distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol3))).sum(axis=1)
-                neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                for trial in np.random.choice(range(len(neighbors_pi)),size=len(neighbors_pol),replace=False):
-                    if max(sim_pay) < neighbors_pi.iloc[trial]:
-                        pol2 = neighbors_pol.iloc[trial]
-                        pay2 = neighbors_pi.iloc[trial]
-                        distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-                        neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                        neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                        sim_pol.append(pol2)
-                        sim_pay.append(pay2)
-                        break
-                    elif pay3 > max(sim_pay):
-                        sim_pol.append(pol3)
-                        sim_pay.append(pay3)
-                        break
-        else: final = min(iteration, final)
-    if pay2 == max(truth_table["payoff"]): print("Sucess in iteration: " + str(final))                    
-    return(pd.DataFrame(dict(policy=sim_pol, payoff = sim_pay)))
-
-
-# In[11]:
-
-
-# Run code
-n = 6
-k = 2
-n_turns = 100
-long_jump = 0.1
-dep_mat = create_dependencies(n, k)
-epis = fitness(dep_mat)
-truth_table = calc_landscape(dep_mat, epis)
-
-print("Interaction Matrix")
-print(dep_mat)
-results = learn(truth_table, n_turns, long_jump)
-print("Learning Results")
-print(results)
-print("Max pi: "+str(max(truth_table["payoff"])))
-print("Full Truth Table")
-#truth_table_p
-
-
-# In[15]:
+# In[146]:
 
 
 import numpy as np
 import pandas as pd
-
-
-def create_dependencies(n, k):
-    prob = float(k)/(n-1)
-    dep_mat = np.zeros((n,n)).astype(int)
-    for i in range(n):
-        for j in range(n):
-            if i != j: dep_mat[i][j] = np.random.choice([1,0], p = [prob,1-prob])
-            else: dep_mat[i][i] = 1
-    return(dep_mat)
-
-def make_epistatics(dep_mat):
-    epis = []
-    for i in range(len(dep_mat)): 
-        epi_key = []
-        for j in range(2**sum(dep_mat[i])): epi_key.append(bin(j))    
-        epi_val = np.random.random(2**sum(dep_mat[i]))
-        epis.append(dict(zip(epi_key,epi_val)))
-    return(epis)
+import matplotlib.pyplot as plt
 
 def transform_row(policy,dep_row):
     interact_row = []
@@ -319,12 +221,6 @@ def transform_matrix(policy,dep_mat):
     int_mat = []
     for i in range(len(dep_mat)): int_mat.append(transform_row(policy,dep_mat[i]))
     return(int_mat)
-    
-def payoff(policy,dep_mat,epis):
-    pay = 0.0
-    keys = transform_matrix(policy, dep_mat)
-    for i in range(len(policy)): pay += epis[i][keys[i]]/len(policy)
-    return(pay)
 
 def int2list(pol_int, n):
     pol_str = bin(pol_int)
@@ -332,88 +228,118 @@ def int2list(pol_int, n):
     if len(policy) < n: policy = [0]*(n-len(policy))+policy
     return(policy)
 
-def calc_landscape(dep_mat, fit_con):
-    lands = {}
-    n = dep_mat.shape[0]
-    for i in range(2**n): lands[str(int2list(i,n))] = payoff(int2list(i,n), dep_mat, fit_con)
-    return(lands)
+class landscape:
+    def __init__(self,n,k):
+        self.n = n
+        self.k = k
+        self.reset()
+    def calc_landscape(self):
+        land = []
+        for i in range(2**self.n): 
+            land.append({'int_pol':i, 'policy': np.asarray(int2list(i,self.n)), 
+                         'payoff':self.payoff(int2list(i,self.n))})
+        self.lands = pd.DataFrame(land)
+    def create_dependencies(self):
+        prob = float(self.k)/(self.n-1)
+        self.dep_mat = np.zeros((self.n,self.n)).astype(int)
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j: self.dep_mat[i][j] = np.random.choice([1,0], p = [prob,1-prob])
+                else: self.dep_mat[i][i] = 1
+    def fitness(self):
+        self.fit_con = []
+        for i in range(self.n): 
+            epi_row = {}
+            for j in range(2**sum(self.dep_mat[i])): epi_row[bin(j)] = np.random.random()
+            self.fit_con.append(epi_row)
+    def payoff(self, policy):
+        pay = 0.0
+        keys = transform_matrix(policy, self.dep_mat)
+        for i in range(len(policy)): pay += self.fit_con[i][keys[i]]/len(policy)
+        return(pay)
+    def reset(self):
+        self.create_dependencies()
+        self.fitness()
+        self.calc_landscape()   
 
-def learn(truth_table, n_turns, long_jump = 0.1):
-    start = np.random.choice(range(len(truth_table["policy"])))
-    pol2 = truth_table["policy"][start]
-    pay2 = truth_table["payoff"][start]
-    distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-    neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-    neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-    sim_pol = [pol2]
-    sim_pay = [pay2]
-    final = n_turns
-    for iteration in range(n_turns):
-        if pay2 < max(truth_table["payoff"]):
-            for trial in np.random.choice(range(len(neighbors_pi)),size=len(neighbors_pol),replace=False):
-                if pay2 < neighbors_pi.iloc[trial]:
-                    pol2 = neighbors_pol.iloc[trial]
-                    pay2 = neighbors_pi.iloc[trial]
-                    distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-                    neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                    neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                    sim_pol.append(pol2)
-                    sim_pay.append(pay2)
-                    break
-            if np.random.choice([True,False], p = [long_jump,1-long_jump]):
-                lon = np.random.choice(range(len(truth_table["policy"])))
-                pol3 = truth_table["policy"][lon]
-                pay3 = truth_table["payoff"][lon]
-                distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol3))).sum(axis=1)
-                neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                for trial in np.random.choice(range(len(neighbors_pi)),size=len(neighbors_pol),replace=False):
-                    if max(sim_pay) < neighbors_pi.iloc[trial]:
-                        pol2 = neighbors_pol.iloc[trial]
-                        pay2 = neighbors_pi.iloc[trial]
-                        distance = pd.DataFrame(abs(pd.DataFrame(truth_table["policy"])-pd.Series(pol2))).sum(axis=1)
-                        neighbors_pol =  pd.Series(truth_table["policy"]).loc[distance==1]
-                        neighbors_pi = pd.Series(truth_table["payoff"]).loc[distance==1]
-                        sim_pol.append(pol2)
-                        sim_pay.append(pay2)
-                        break
-                    elif pay3 > max(sim_pay):
-                        sim_pol.append(pol3)
-                        sim_pay.append(pay3)
-                        break
-        else: final = min(iteration, final)
-    if pay2 == max(truth_table["payoff"]): print("Sucess in iteration: " + str(final))                    
-    return(pd.DataFrame(dict(policy=sim_pol, payoff = sim_pay)))
+class agent:
+    def __init__(self, long_jump):
+        self.long_jump = long_jump
+    def search(self, lands, num_periods):
+        current_row = lands.loc[np.random.choice(lands.shape[0]),:]
+        global_max = lands.loc[np.argmax(lands.payoff),:]
+        log_short = [current_row]
+        log_long = [current_row]
+        for j in range(num_periods):
+            if np.random.choice(["Walk", "Jump"], p = [1-long_jump, long_jump]) == "Jump": 
+                proposed_row = np.random.choice(lands.shape[0])
+            else:
+                neighbors = [i for i in range(lands.shape[0]) if sum(abs(lands.policy[i] - current_row.policy)) == 1]
+                randomized_neighbors = np.random.choice(neighbors, replace = False, size = len(neighbors))
+                for proposed_row in randomized_neighbors:
+                    if lands.payoff[proposed_row] > current_row.payoff: break # weird but works
+            log_long.append(lands.loc[proposed_row,:])
+            if lands.payoff[proposed_row] > current_row.payoff:
+                current_row = lands.loc[proposed_row,:]
+                log_short.append(current_row)
+            if current_row.int_pol == global_max.int_pol: break
+        log_short.append(global_max) # add global max for comparison later on
+        reached_max = 1*(current_row.int_pol == global_max.int_pol)
+        return([reached_max, len(log_short), len(log_long), pd.DataFrame(log_short), 0])#log_long])
+    
+def run_simulation(num_reps, num_periods, Alice, Environment):
+        all_reached_max = 0
+        all_num_steps = 0
+        all_num_trials = 0
+        for j in range(num_reps):
+            Environment.reset() # 0.6 of 29 second
+            reached_max, n_step, n_trial, o_short, o_long = Alice.search(lands = Environment.lands, num_periods = num_periods)
+            all_reached_max += reached_max
+            all_num_steps += n_step
+            all_num_trials += n_trial
+        return([all_reached_max, all_num_steps, all_num_trials])
 
-# Run code
+
+# ## Run Simulation
+# Having the agent and the environment we can create the simulation. 
+
+# In[147]:
+
+
 n = 6
 k = 2
-n_turns = 100
-long_jump = 0.1
-dep_mat = create_dependencies(n, k)
-epis = make_epistatics(dep_mat)
-
-for i in range(n):
-    pol = []
-    pay = []
-    for j in range(2**n):
-        policy = int2list(j,n)
-        pol.append(policy)
-        pay.append(payoff(policy, dep_mat, epis))
-truth_table_p = zip(range(2**n),pol,pay)
-truth_table = dict(policy=pol, payoff = pay)
-print("Interaction Matrix")
-print(dep_mat)
-results = learn(truth_table, n_turns, long_jump)
-print("Learning Results")
-print(results)
-print("Max pi: "+str(max(truth_table["payoff"])))
-print("Full Truth Table")
-#truth_table_p
+num_periods = 100
+num_reps = 100
+long_jump = 0.25
+Environment = landscape(n,k)    
+Alice = agent(long_jump = 0.25)
+reached_max, n_step, n_trial, output_short, output_long = Alice.search(Environment.lands, num_periods)
+output_short
 
 
-# In[16]:
+# In[148]:
 
 
-truth_table
+import time
+start_time = time.time()
+all_reached_max, all_num_steps, all_num_trials = run_simulation(num_reps, num_periods, Alice, Environment)
+print(100*all_reached_max/num_reps)
+print(all_num_steps/num_reps)
+print(all_num_trials/num_reps)
+print(round(time.time()-start_time,1))
+
+
+# In[149]:
+
+
+import time
+start_time = time.time()
+for i in range(100): Alice.search(lands = Environment.lands, num_periods = num_periods)
+print(round(time.time()-start_time,1))
+
+
+# In[ ]:
+
+
+
 
