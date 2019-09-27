@@ -12,5 +12,6 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 **Link:** https://mybinder.org/v2/gh/jparrieta/nk/master
 
 # log  
-
-**190916:** Addeed the landscape building functionality. Search is not working at the moment.
+  
+**190927:** Included the search functionality. Still no myopia
+**190916:** Added the landscape building functionality. Search is not working at the moment.
