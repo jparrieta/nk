@@ -13194,9 +13194,9 @@ This function includes two variables N and K and outputs a NxN interdependency m
 
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[1, 1, 0, 1],
-       [0, 1, 1, 0],
-       [0, 1, 1, 0],
-       [0, 1, 1, 1]])</pre>
+       [1, 1, 1, 0],
+       [1, 1, 1, 0],
+       [1, 1, 1, 1]])</pre>
 </div>
 
 </div>
@@ -13279,30 +13279,46 @@ You see the code below and the outputs is the list of dictionaries of the depend
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;0b0&#39;: 0.4901935594280574,
-  &#39;0b1&#39;: 0.17360573688357983,
-  &#39;0b10&#39;: 0.04216873664150156,
-  &#39;0b11&#39;: 0.9272187059278515,
-  &#39;0b100&#39;: 0.7169848596231495,
-  &#39;0b101&#39;: 0.8308316702512346,
-  &#39;0b110&#39;: 0.15434241410247151,
-  &#39;0b111&#39;: 0.39812252395017234},
- {&#39;0b0&#39;: 0.48625539090232295,
-  &#39;0b1&#39;: 0.6900427042649496,
-  &#39;0b10&#39;: 0.360379480558197,
-  &#39;0b11&#39;: 0.5622654913522256},
- {&#39;0b0&#39;: 0.24214975137585903,
-  &#39;0b1&#39;: 0.21641171079895438,
-  &#39;0b10&#39;: 0.3840671562178297,
-  &#39;0b11&#39;: 0.043281246699361065},
- {&#39;0b0&#39;: 0.15948034949770618,
-  &#39;0b1&#39;: 0.564731888080491,
-  &#39;0b10&#39;: 0.1309241258778555,
-  &#39;0b11&#39;: 0.31037880274071994,
-  &#39;0b100&#39;: 0.018383262489677143,
-  &#39;0b101&#39;: 0.3910283732038552,
-  &#39;0b110&#39;: 0.7664895746964873,
-  &#39;0b111&#39;: 0.5067037510106012}]</pre>
+<pre>[{&#39;0b0&#39;: 0.6535825650637801,
+  &#39;0b1&#39;: 0.7697011919400729,
+  &#39;0b10&#39;: 0.578460795955313,
+  &#39;0b11&#39;: 0.28057930602681336,
+  &#39;0b100&#39;: 0.7124993151769322,
+  &#39;0b101&#39;: 0.3793476822968129,
+  &#39;0b110&#39;: 0.33348429711071703,
+  &#39;0b111&#39;: 0.678392118783819},
+ {&#39;0b0&#39;: 0.9554598407524872,
+  &#39;0b1&#39;: 0.2864333469038465,
+  &#39;0b10&#39;: 0.017462696177842907,
+  &#39;0b11&#39;: 0.6122530765671762,
+  &#39;0b100&#39;: 0.13174545727494158,
+  &#39;0b101&#39;: 0.6599089502819071,
+  &#39;0b110&#39;: 0.28049970438062455,
+  &#39;0b111&#39;: 0.5509615822422482},
+ {&#39;0b0&#39;: 0.6980874961746276,
+  &#39;0b1&#39;: 0.37464908024509314,
+  &#39;0b10&#39;: 0.2505792335477638,
+  &#39;0b11&#39;: 0.8847466813002146,
+  &#39;0b100&#39;: 0.9057193506009633,
+  &#39;0b101&#39;: 0.8293390402127631,
+  &#39;0b110&#39;: 0.921701883783362,
+  &#39;0b111&#39;: 0.31832174498824073},
+ {&#39;0b0&#39;: 0.43549082698494146,
+  &#39;0b1&#39;: 0.5632623401123106,
+  &#39;0b10&#39;: 0.8838067985220653,
+  &#39;0b11&#39;: 0.29751525980515725,
+  &#39;0b100&#39;: 0.6034964757236799,
+  &#39;0b101&#39;: 0.360152142731639,
+  &#39;0b110&#39;: 0.9503397780923879,
+  &#39;0b111&#39;: 0.43168010233383003,
+  &#39;0b1000&#39;: 0.464921778779841,
+  &#39;0b1001&#39;: 0.7661736378402487,
+  &#39;0b1010&#39;: 0.3546061853949424,
+  &#39;0b1011&#39;: 0.7903042386607724,
+  &#39;0b1100&#39;: 0.8833257619949118,
+  &#39;0b1101&#39;: 0.8242185115268024,
+  &#39;0b1110&#39;: 0.39671090769997086,
+  &#39;0b1111&#39;: 0.3077112807606781}]</pre>
 </div>
 
 </div>
@@ -13358,7 +13374,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0b1&#39;</pre>
+<pre>&#39;0b10&#39;</pre>
 </div>
 
 </div>
@@ -13404,7 +13420,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;0b110&#39;, &#39;0b1&#39;, &#39;0b1&#39;, &#39;0b101&#39;]</pre>
+<pre>[&#39;0b110&#39;, &#39;0b10&#39;, &#39;0b10&#39;, &#39;0b1010&#39;]</pre>
 </div>
 
 </div>
@@ -13451,7 +13467,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.3629563005925577</pre>
+<pre>0.23903310305781653</pre>
 </div>
 
 </div>
@@ -13574,97 +13590,97 @@ Below you can see an example of the full landscape.</p>
     <tr>
       <th>0</th>
       <td>0</td>
-      <td>0.344520</td>
+      <td>0.685655</td>
       <td>[0, 0, 0, 0]</td>
     </tr>
     <tr>
       <th>1</th>
       <td>1</td>
-      <td>0.365943</td>
+      <td>0.707742</td>
       <td>[0, 0, 0, 1]</td>
     </tr>
     <tr>
       <th>2</th>
       <td>2</td>
-      <td>0.341391</td>
+      <td>0.573636</td>
       <td>[0, 0, 1, 0]</td>
     </tr>
     <tr>
       <th>3</th>
       <td>3</td>
-      <td>0.556980</td>
+      <td>0.658322</td>
       <td>[0, 0, 1, 1]</td>
     </tr>
     <tr>
       <th>4</th>
       <td>4</td>
-      <td>0.378339</td>
+      <td>0.432577</td>
       <td>[0, 1, 0, 0]</td>
     </tr>
     <tr>
       <th>5</th>
       <td>5</td>
-      <td>0.362956</td>
+      <td>0.239033</td>
       <td>[0, 1, 0, 1]</td>
     </tr>
     <tr>
       <th>6</th>
       <td>6</td>
-      <td>0.239524</td>
+      <td>0.682751</td>
       <td>[0, 1, 1, 0]</td>
     </tr>
     <tr>
       <th>7</th>
       <td>7</td>
-      <td>0.316648</td>
+      <td>0.483099</td>
       <td>[0, 1, 1, 1]</td>
     </tr>
     <tr>
       <th>8</th>
       <td>8</td>
-      <td>0.265373</td>
+      <td>0.498511</td>
       <td>[1, 0, 0, 0]</td>
     </tr>
     <tr>
       <th>9</th>
       <td>9</td>
-      <td>0.394405</td>
+      <td>0.451651</td>
       <td>[1, 0, 0, 1]</td>
     </tr>
     <tr>
       <th>10</th>
       <td>10</td>
-      <td>0.262244</td>
+      <td>0.654775</td>
       <td>[1, 0, 1, 0]</td>
     </tr>
     <tr>
       <th>11</th>
       <td>11</td>
-      <td>0.585442</td>
+      <td>0.673204</td>
       <td>[1, 0, 1, 1]</td>
     </tr>
     <tr>
       <th>12</th>
       <td>12</td>
-      <td>0.599601</td>
+      <td>0.518774</td>
       <td>[1, 1, 0, 0]</td>
     </tr>
     <tr>
       <th>13</th>
       <td>13</td>
-      <td>0.423901</td>
+      <td>0.741424</td>
       <td>[1, 1, 0, 1]</td>
     </tr>
     <tr>
       <th>14</th>
       <td>14</td>
-      <td>0.460786</td>
+      <td>0.395386</td>
       <td>[1, 1, 1, 0]</td>
     </tr>
     <tr>
       <th>15</th>
       <td>15</td>
-      <td>0.377593</td>
+      <td>0.463847</td>
       <td>[1, 1, 1, 1]</td>
     </tr>
   </tbody>
@@ -13690,7 +13706,7 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13698,16 +13714,12 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_row</span><span class="p">):</span>
-    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">interact_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">trans_pol</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interact_row</span><span class="p">))):</span> <span class="n">trans_pol</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">interact_row</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span> <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">trans_pol</span> <span class="o">=</span> <span class="n">list2int</span><span class="p">(</span><span class="n">interact_row</span><span class="p">)</span>
     <span class="k">return</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">trans_pol</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">):</span>
-    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)):</span> <span class="n">int_mat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">))]</span>
     <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">int2list</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -13716,16 +13728,28 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">policy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span><span class="o">+</span><span class="n">policy</span>
     <span class="k">return</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">list2int</span><span class="p">(</span><span class="n">pol_list</span><span class="p">):</span>
+    <span class="n">pol_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="mi">2</span><span class="o">**</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">pol_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pol_list</span><span class="p">)))])</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">find_neighbors</span><span class="p">(</span><span class="n">policy</span><span class="p">):</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">random_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">random_order</span><span class="p">:</span>
+        <span class="n">neighbor</span> <span class="o">=</span> <span class="n">policy</span>
+        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2int</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+
 <span class="k">class</span> <span class="nc">landscape</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">calc_landscape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">land</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span> 
-            <span class="n">land</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;int_pol&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)),</span> 
-                         <span class="s1">&#39;payoff&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))})</span>
+        <span class="n">land</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;int_pol&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)),</span> <span class="s1">&#39;payoff&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span><span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))}</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lands</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">land</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -13734,20 +13758,18 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">prob</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">prob</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">def</span> <span class="nf">fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fitness_contribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span> 
-            <span class="n">epi_row</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span> <span class="n">epi_row</span><span class="p">[</span><span class="nb">bin</span><span class="p">(</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="n">epi_row</span> <span class="o">=</span> <span class="p">{</span><span class="nb">bin</span><span class="p">(</span><span class="n">j</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epi_row</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">payoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
-        <span class="n">pay</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)):</span> <span class="n">pay</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+        <span class="n">pay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))])</span>
         <span class="k">return</span><span class="p">(</span><span class="n">pay</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_dependencies</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fitness</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_contribution</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_landscape</span><span class="p">()</span>   
 
 <span class="k">class</span> <span class="nc">agent</span><span class="p">:</span>
@@ -13762,30 +13784,34 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;Walk&quot;</span><span class="p">,</span> <span class="s2">&quot;Jump&quot;</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">long_jump</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">])</span> <span class="o">==</span> <span class="s2">&quot;Jump&quot;</span><span class="p">:</span> 
                 <span class="n">proposed_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_row</span><span class="o">.</span><span class="n">policy</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-                <span class="n">randomized_neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors</span><span class="p">))</span>
+                <span class="n">randomized_neighbors</span> <span class="o">=</span> <span class="n">find_neighbors</span><span class="p">(</span><span class="n">current_row</span><span class="o">.</span><span class="n">policy</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">proposed_row</span> <span class="ow">in</span> <span class="n">randomized_neighbors</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">current_row</span><span class="o">.</span><span class="n">payoff</span><span class="p">:</span> <span class="k">break</span> <span class="c1"># weird but works</span>
-            <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">,:])</span>
             <span class="k">if</span> <span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">current_row</span><span class="o">.</span><span class="n">payoff</span><span class="p">:</span>
                 <span class="n">current_row</span> <span class="o">=</span> <span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">,:]</span>
-                <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">current_row</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">==</span> <span class="n">global_max</span><span class="o">.</span><span class="n">int_pol</span><span class="p">:</span> <span class="k">break</span>
+                <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span> <span class="c1">#stores changes</span>
+            <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span> <span class="c1">#stores every period</span>
+            <span class="k">if</span> <span class="n">current_row</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">==</span> <span class="n">global_max</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">num_periods</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> 
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">-</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span> <span class="c1"># makes all dataframes the same length</span>
+                <span class="k">break</span> <span class="c1"># avoid doing irrelevant calculations</span>
         <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">global_max</span><span class="p">)</span> <span class="c1"># add global max for comparison later on</span>
+        <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">global_max</span><span class="p">)</span> <span class="c1"># add global max for comparison later on</span>
         <span class="n">reached_max</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">current_row</span><span class="o">.</span><span class="n">int_pol</span> <span class="o">==</span> <span class="n">global_max</span><span class="o">.</span><span class="n">int_pol</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">([</span><span class="n">reached_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_short</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_long</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">log_short</span><span class="p">),</span> <span class="mi">0</span><span class="p">])</span><span class="c1">#log_long])</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">reached_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_short</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">log_short</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">log_long</span><span class="p">)])</span>
     
 <span class="k">def</span> <span class="nf">run_simulation</span><span class="p">(</span><span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">):</span>
         <span class="n">all_reached_max</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">all_num_steps</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">all_num_trials</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span>
-            <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> <span class="c1"># 0.6 of 29 second</span>
-            <span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">o_short</span><span class="p">,</span> <span class="n">o_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
+            <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> <span class="c1"># 23 of 35s</span>
+            <span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">o_short</span><span class="p">,</span> <span class="n">o_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span> <span class="c1"># 11 of 35s</span>
             <span class="n">all_reached_max</span> <span class="o">+=</span> <span class="n">reached_max</span>
             <span class="n">all_num_steps</span> <span class="o">+=</span> <span class="n">n_step</span>
             <span class="n">all_num_trials</span> <span class="o">+=</span> <span class="n">n_trial</span>
-        <span class="k">return</span><span class="p">([</span><span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">])</span>
+            <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">all_payoffs</span><span class="p">,</span> <span class="n">o_long</span><span class="o">.</span><span class="n">payoff</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">,</span> <span class="n">all_payoffs</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13803,16 +13829,16 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">9</span>
 <span class="n">num_periods</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">num_reps</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">Environment</span> <span class="o">=</span> <span class="n">landscape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>    
-<span class="n">Alice</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Alice</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">long_jump</span> <span class="o">=</span> <span class="n">long_jump</span><span class="p">)</span>
 <span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">output_short</span><span class="p">,</span> <span class="n">output_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">)</span>
 <span class="n">output_short</span>
 </pre></div>
@@ -13827,7 +13853,25 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[147]:</div>
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\ProgramData\Anaconda3\lib\site-packages\numpy\core\fromnumeric.py:56: FutureWarning: 
+The current behaviour of &#39;Series.argmax&#39; is deprecated, use &#39;idxmax&#39;
+instead.
+The behavior of &#39;argmax&#39; will be corrected to return the positional
+maximum in the future. For now, use &#39;series.values.argmax&#39; or
+&#39;np.argmax(np.array(values))&#39; to get the position of the maximum
+row.
+  return getattr(obj, method)(*args, **kwds)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13857,40 +13901,64 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
   </thead>
   <tbody>
     <tr>
+      <th>9</th>
+      <td>9</td>
+      <td>0.432086</td>
+      <td>[1, 1, 1, 1, 1, 1, 0, 1, 1, 0]</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>64</td>
+      <td>0.501938</td>
+      <td>[1, 1, 1, 0, 1, 1, 1, 1, 1, 1]</td>
+    </tr>
+    <tr>
       <th>0</th>
       <td>0</td>
-      <td>0.396579</td>
-      <td>[0, 0, 0, 0, 0, 0]</td>
+      <td>0.501948</td>
+      <td>[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>0.478986</td>
-      <td>[0, 0, 0, 0, 0, 1]</td>
+      <th>4</th>
+      <td>4</td>
+      <td>0.638571</td>
+      <td>[1, 1, 1, 1, 1, 1, 1, 0, 1, 1]</td>
     </tr>
     <tr>
-      <th>17</th>
-      <td>17</td>
-      <td>0.532777</td>
-      <td>[0, 1, 0, 0, 0, 1]</td>
+      <th>529</th>
+      <td>529</td>
+      <td>0.663877</td>
+      <td>[0, 1, 1, 1, 1, 0, 1, 1, 1, 0]</td>
     </tr>
     <tr>
-      <th>49</th>
-      <td>49</td>
-      <td>0.781835</td>
-      <td>[1, 1, 0, 0, 0, 1]</td>
+      <th>470</th>
+      <td>470</td>
+      <td>0.670125</td>
+      <td>[0, 1, 1, 1, 0, 1, 0, 1, 1, 0]</td>
     </tr>
     <tr>
-      <th>57</th>
-      <td>57</td>
-      <td>0.793122</td>
-      <td>[1, 1, 1, 0, 0, 1]</td>
+      <th>395</th>
+      <td>395</td>
+      <td>0.733331</td>
+      <td>[1, 0, 0, 1, 1, 1, 0, 1, 0, 0]</td>
     </tr>
     <tr>
-      <th>57</th>
-      <td>57</td>
-      <td>0.793122</td>
-      <td>[1, 1, 1, 0, 0, 1]</td>
+      <th>127</th>
+      <td>127</td>
+      <td>0.753351</td>
+      <td>[0, 0, 0, 1, 1, 1, 1, 1, 1, 1]</td>
+    </tr>
+    <tr>
+      <th>205</th>
+      <td>205</td>
+      <td>0.758952</td>
+      <td>[0, 0, 1, 1, 0, 0, 1, 1, 0, 1]</td>
+    </tr>
+    <tr>
+      <th>205</th>
+      <td>205</td>
+      <td>0.758952</td>
+      <td>[0, 0, 1, 1, 0, 0, 1, 1, 0, 1]</td>
     </tr>
   </tbody>
 </table>
@@ -13905,12 +13973,12 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[148]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">)</span>
+<span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">,</span> <span class="n">all_payoffs</span><span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">all_reached_max</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">all_num_steps</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">all_num_trials</span><span class="o">/</span><span class="n">num_reps</span><span class="p">)</span>
@@ -13931,10 +13999,10 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>74.0
-5.29
-39.87
-17.4
+<pre>50.0
+6.44
+95.61
+35.2
 </pre>
 </div>
 </div>
@@ -13945,13 +14013,61 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[149]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="n">all_payoffs</span><span class="p">[:</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.collections.PathCollection at 0xbfba393c18&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Environment</span> <span class="o">=</span> <span class="n">landscape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>    
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> <span class="c1"># 90% from cal_lands</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13968,7 +14084,40 @@ Levinthal includes other aspects like myopia but this is not in the code at the 
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>7.3
+<pre>23.152421236038208
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>8.827234268188477
 </pre>
 </div>
 </div>
