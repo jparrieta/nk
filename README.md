@@ -13,6 +13,7 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 
 # log  
   
-**190930:** Optimized search procedure.  
+**190930:** Separated the create landscape tutorial from the full Levinthal (1997) tutorial.  
+**190929:** Optimized search procedure.  
 **190927:** Included the search functionality. Still no myopia.  
 **190916:** Added the landscape building functionality. Search is not working at the moment.
