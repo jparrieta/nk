@@ -202,7 +202,7 @@ calc_landscape(dep_mat, fit_con)
 # 
 # ### Agent
 
-# In[146]:
+# In[9]:
 
 
 import numpy as np
@@ -210,16 +210,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def transform_row(policy,dep_row):
-    interact_row = []
-    for i in range(len(policy)):
-        if dep_row[i] == 1: interact_row.append(policy[i])
-    trans_pol = 0
-    for j in reversed(range(len(interact_row))): trans_pol += (2**j)*interact_row[j]
+    interact_row = [policy[i] for i in range(len(policy)) if dep_row[i] == 1]
+    trans_pol = list2int(interact_row)
     return(bin(trans_pol))
 
 def transform_matrix(policy,dep_mat):
-    int_mat = []
-    for i in range(len(dep_mat)): int_mat.append(transform_row(policy,dep_mat[i]))
+    int_mat = [transform_row(policy,dep_mat[i]) for i in range(len(dep_mat))]
     return(int_mat)
 
 def int2list(pol_int, n):
@@ -228,16 +224,28 @@ def int2list(pol_int, n):
     if len(policy) < n: policy = [0]*(n-len(policy))+policy
     return(policy)
 
+def list2int(pol_list):
+    pol_int = np.sum([(2**j)*pol_list[j] for j in reversed(range(len(pol_list)))])
+    return(pol_int)
+
+def find_neighbors(policy):
+    neighbors = []
+    random_order = np.random.choice(range(len(policy)), replace = False, size = len(policy))
+    for i in random_order:
+        neighbor = policy
+        if policy[i] == 1: neighbor[i] = 0
+        else: neighbor[i] = 1
+        neighbors.append(list2int(neighbor))
+    return(neighbors)
+
 class landscape:
     def __init__(self,n,k):
         self.n = n
         self.k = k
         self.reset()
     def calc_landscape(self):
-        land = []
-        for i in range(2**self.n): 
-            land.append({'int_pol':i, 'policy': np.asarray(int2list(i,self.n)), 
-                         'payoff':self.payoff(int2list(i,self.n))})
+        land = [{'int_pol':i, 'policy': np.asarray(int2list(i,self.n)), 'payoff':self.payoff(int2list(i,self.n))}
+                for i in range(2**self.n)]
         self.lands = pd.DataFrame(land)
     def create_dependencies(self):
         prob = float(self.k)/(self.n-1)
@@ -246,20 +254,18 @@ class landscape:
             for j in range(self.n):
                 if i != j: self.dep_mat[i][j] = np.random.choice([1,0], p = [prob,1-prob])
                 else: self.dep_mat[i][i] = 1
-    def fitness(self):
+    def fitness_contribution(self):
         self.fit_con = []
         for i in range(self.n): 
-            epi_row = {}
-            for j in range(2**sum(self.dep_mat[i])): epi_row[bin(j)] = np.random.random()
+            epi_row = {bin(j): np.random.random() for j in range(2**sum(self.dep_mat[i]))}
             self.fit_con.append(epi_row)
     def payoff(self, policy):
-        pay = 0.0
         keys = transform_matrix(policy, self.dep_mat)
-        for i in range(len(policy)): pay += self.fit_con[i][keys[i]]/len(policy)
+        pay = np.sum([self.fit_con[i][keys[i]]/len(policy) for i in range(len(policy))])
         return(pay)
     def reset(self):
         self.create_dependencies()
-        self.fitness()
+        self.fitness_contribution()
         self.calc_landscape()   
 
 class agent:
@@ -274,68 +280,86 @@ class agent:
             if np.random.choice(["Walk", "Jump"], p = [1-long_jump, long_jump]) == "Jump": 
                 proposed_row = np.random.choice(lands.shape[0])
             else:
-                neighbors = [i for i in range(lands.shape[0]) if sum(abs(lands.policy[i] - current_row.policy)) == 1]
-                randomized_neighbors = np.random.choice(neighbors, replace = False, size = len(neighbors))
+                randomized_neighbors = find_neighbors(current_row.policy)
                 for proposed_row in randomized_neighbors:
                     if lands.payoff[proposed_row] > current_row.payoff: break # weird but works
-            log_long.append(lands.loc[proposed_row,:])
             if lands.payoff[proposed_row] > current_row.payoff:
                 current_row = lands.loc[proposed_row,:]
-                log_short.append(current_row)
-            if current_row.int_pol == global_max.int_pol: break
+                log_short.append(current_row) #stores changes
+            log_long.append(current_row) #stores every period
+            if current_row.int_pol == global_max.int_pol & j < num_periods-1: 
+                for k in range(num_periods-j-1): log_long.append(current_row) # makes all dataframes the same length
+                break # avoid doing irrelevant calculations
         log_short.append(global_max) # add global max for comparison later on
+        log_long.append(global_max) # add global max for comparison later on
         reached_max = 1*(current_row.int_pol == global_max.int_pol)
-        return([reached_max, len(log_short), len(log_long), pd.DataFrame(log_short), 0])#log_long])
+        return([reached_max, len(log_short)-1, j, pd.DataFrame(log_short), pd.DataFrame(log_long)])
     
 def run_simulation(num_reps, num_periods, Alice, Environment):
         all_reached_max = 0
         all_num_steps = 0
         all_num_trials = 0
+        all_payoffs = np.zeros(num_periods+2)
         for j in range(num_reps):
-            Environment.reset() # 0.6 of 29 second
-            reached_max, n_step, n_trial, o_short, o_long = Alice.search(lands = Environment.lands, num_periods = num_periods)
+            Environment.reset() # 23 of 35s
+            reached_max, n_step, n_trial, o_short, o_long = Alice.search(lands = Environment.lands, num_periods = num_periods) # 11 of 35s
             all_reached_max += reached_max
             all_num_steps += n_step
             all_num_trials += n_trial
-        return([all_reached_max, all_num_steps, all_num_trials])
+            all_payoffs = np.add(all_payoffs, o_long.payoff)
+        return([all_reached_max, all_num_steps, all_num_trials, all_payoffs])
 
 
 # ## Run Simulation
 # Having the agent and the environment we can create the simulation. 
 
-# In[147]:
+# In[10]:
 
 
-n = 6
-k = 2
+n = 10
+k = 9
 num_periods = 100
 num_reps = 100
-long_jump = 0.25
+long_jump = 0.0
 Environment = landscape(n,k)    
-Alice = agent(long_jump = 0.25)
+Alice = agent(long_jump = long_jump)
 reached_max, n_step, n_trial, output_short, output_long = Alice.search(Environment.lands, num_periods)
 output_short
 
 
-# In[148]:
+# In[11]:
 
 
 import time
 start_time = time.time()
-all_reached_max, all_num_steps, all_num_trials = run_simulation(num_reps, num_periods, Alice, Environment)
+all_reached_max, all_num_steps, all_num_trials, all_payoffs= run_simulation(num_reps, num_periods, Alice, Environment)
 print(100*all_reached_max/num_reps)
 print(all_num_steps/num_reps)
 print(all_num_trials/num_reps)
 print(round(time.time()-start_time,1))
 
 
-# In[149]:
+# In[12]:
 
 
-import time
+plt.scatter(range(num_periods+2), all_payoffs[:num_periods+2])
+
+
+# In[13]:
+
+
+Environment = landscape(n,k)    
 start_time = time.time()
-for i in range(100): Alice.search(lands = Environment.lands, num_periods = num_periods)
-print(round(time.time()-start_time,1))
+for i in range(100): Environment.reset() # 90% from cal_lands
+print(time.time()-start_time)
+
+
+# In[14]:
+
+
+start_time = time.time()
+for i in range(100): Alice.search(Environment.lands, num_periods)
+print(time.time()-start_time)
 
 
 # In[ ]:
