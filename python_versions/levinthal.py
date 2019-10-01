@@ -20,11 +20,11 @@
 # 
 # ## 1. Landscape
 # An NK landscape outputs a payoff value for an input policy. It is is equivalent to getting an elevation value after providing the longitude and latitude in a map. That is the reason why it is called a landscape. However, the inputs of an NK landscape are binary thus the analogy does not go to far.  
-# Overall, the landscape receives a policy and outputs a payoff for this policy. The policy consists in N binary values (e.g. [1,0,1]). The payoff depends on the value of K of the NK model. 
+# Overall, the landscape receives a policy and outputs a payoff for this policy. The policy consists in N binary values stored as a string of 0s and 1s (e.g. '101'). The payoff depends on the value of K of the NK model. 
 # 
 # K represents the amount of interdependencies that are linked to the performance of each of the N variables. In an environment where K=0, then the performance of the policy value depends only on its own value, if 0 then x0 if 1 then x1. It does not depend on the other N-1 elements. If K > 0 then the payoff for this policy element depends on the value of some of the N-1 elements of the policy. If K = N-1 then the payoff of this policy element depends on the value of all the other N-1 policy element. The higher the K the higher the complexity of the interrelationships when calculating the performance of each policy.    
 # ### 1.1 Create Dependencies
-# The first step to create a landscape is creating the dependency matrix. Here one takes N and K and fills an N by N matrix with 1s in the diagonal and N*K 1s in the off diagonal. On each row there are K 1s in the off-diagonal, and a 1 in the diagonal. 
+# The first step to create a landscape is creating the dependency matrix. Here one takes N and K and fills an N by N matrix with 1s in the diagonal and N*K 1s in the off diagonal. On each row there are on average K 1s in the off-diagonal, and always a 1 in the diagonal. 
 # 
 # ### 1.2 Fitness contribution
 # Having the interdependency matrix. We can create the fitness contributions. These basically determine the payoff each policy element receives. There are in total N different sets of fitness contribution functions. Each of the N sets has 2^k+1 different values for all the combinations of the policies that matter for the policy element at hand.  
@@ -32,15 +32,15 @@
 # 
 # ### 1.3 Payoff
 # The fitness contributions are used to calculate the total payoff of each policy. For this we need a way of taking a policy and determining the interactions that each policy element makes in order to estimate its payoff contribution.   
-# This requires several steps. Firts we need to obtain the keys for the fitness contributions. that is we take a policy (e.g. [1,0,1]) and determine for every policy element the key value for the fitness contribution.  
+# This requires several steps. Firts we need to obtain the keys for the fitness contributions. that is we take a policy (e.g. '101']) and determine for every policy element the key value for the fitness contribution.  
 #   
-# Let's imagine that the dependency matrix is:  
+# Let's imagine that the interdependency matrix is:  
 #   
-# |1 1 0|  
+# |1 0 0|  
 # |0 1 1|  
-# |0 1 1|  
+# |1 1 1|  
 # 
-# From Levinthal (1997), we would see that the first key value is [1,0], the second [0,1], and the third [0,1]. In the code below, the functions transfor_matrix and transform_row are in charge of making the translation from a policy to the key values. 
+# From Levinthal (1997), we would see that the first key value is '1', the second '01', and the third '101'. In the code below, the functions transfor_matrix and transform_row are in charge of making the translation from a policy to the key values. 
 #   
 # After having the key values, we can calculate the performance of each policy element by addressing the fitness contribution list of each element, and then averaging them. The total payoff for one fitness contribution is this average. 
 # 
@@ -57,37 +57,29 @@
 # The summary function outputs the maximum, minimum, and number of peaks in the landscape. 
 # 
 # ### 1.7 Miscellaneous functions  
-# #### 1.7.1 Int2List
-# This function translates an integer value to a list of that value in binary.  
-# For example 5 is translated in to [0,1,0,1] in the case of N=4 or [1,0,1] in case N = 3
+# #### 1.7.1 Int2Pol
+# This function translates an integer value to a string of 0s and 1s. This string is made so that it has length N.
+# For example 5 is translated in to '101' in the case of N=3 or '0101' in case N = 4
 # 
-# #### 1.7.2 List2Int
-# This function does the opposite, takes a list policy and outputs its integer value. That is it takes say [1,1,0,0] and outputs 12.
-# 
-# #### 1.7.3 Transform Matrix
+# #### 1.7.2 Transform Matrix
 # Handles the transformation of a policy into the key values for estimating its payoff. For this it uses transform_row for every policy element. 
 # 
-# #### 1.7.4 Transform Row
-# Uses the policy and interacts it with a row of the dependency matrix. For example if the policy is  [1,0,1] and the row is [0,1,1] then the output is [0,1]. If the row was [1,0,0] then the output would be [1]. The number of items in the output depents on the number of 1s in the row. This in turn is determined by the K value.  
+# #### 1.7.3 Transform Row
+# Uses the policy and interacts it with a row of the dependency matrix. The length of the output depends on the number of 1s in the row of the interdependency matrix. For example if the policy is '101' and the row is [0,1,1] then the output is '01'. If the row was [1,0,0] then the output would be '1'.   
 # This transformation gives always the same value and thus can be used with the fitness contribution to estimate the payoff for each policy element.
 
 # In[1]:
 
 
 import numpy as np
-import pandas as pd
+import pandas as pd # used only for storage
 import matplotlib.pyplot as plt
 
-def int2list(pol_int, n):
-    pol_str = bin(pol_int)
-    policy = [int(pol) for pol in pol_str[2:]]
-    if len(policy) < n: policy = [0]*(n-len(policy))+policy
-    return(policy)
-
-def list2int(pol_list):
-    pol_list.reverse()
-    pol_int = np.sum([(2**j)*pol_list[j] for j in range(len(pol_list))])
-    return(pol_int)
+def int2pol(pol_int, n):
+    pol = bin(pol_int)
+    pol = pol[2:]
+    if len(pol) < n: pol = '0'*(n-len(pol)) + pol
+    return(pol)
 
 def transform_matrix(policy, dep_mat):
     int_mat = [transform_row(policy, dep_mat[i]) for i in range(len(dep_mat))]
@@ -95,24 +87,25 @@ def transform_matrix(policy, dep_mat):
 
 def transform_row(policy, dep_row):
     interact_row = [policy[i] for i in range(len(policy)) if dep_row[i] == 1]
-    trans_pol = list2int(interact_row)
-    return(bin(trans_pol))
+    trans_pol = ''
+    for pol_i in interact_row: trans_pol += pol_i
+    return(trans_pol)
 
 class landscape:
-    def __init__(self,n,k):
+    def __init__(self, n, k):
         self.n = n
         self.k = k
         self.reset()
     def calc_landscape(self):
-        land = []
+        land = {}
         for i in range(2**self.n):
-            pol_list = int2list(i,self.n)
-            land.append({'int_pol':i, 'policy': np.asarray(pol_list), 'payoff':self.payoff(pol_list)})
-        self.lands = pd.DataFrame(land)
+            pol = int2pol(i,self.n)
+            land[pol] = self.payoff(pol)
+        self.lands = land
     def create_dependencies(self):
         self.dep_mat = np.zeros((self.n,self.n)).astype(int)
+        inter = np.random.choice([1]*self.k*self.n+[0]*(self.n-self.k-1)*self.n, replace = False, size = self.n*(self.n-1))
         for i in range(self.n):
-            inter = np.random.choice([1]*self.k+[0]*(self.n-self.k-1), replace = False, size = self.n-1)
             for j in range(self.n):
                 if i != j: 
                     self.dep_mat[i][j] = inter[0]
@@ -121,7 +114,8 @@ class landscape:
     def fitness_contribution(self):
         self.fit_con = []
         for i in range(self.n): 
-            epi_row = {bin(j): np.random.random() for j in range(2**sum(self.dep_mat[i]))}
+            epi_row = {int2pol(j,sum(self.dep_mat[i])): np.random.random() 
+                       for j in range(2**sum(self.dep_mat[i]))}
             self.fit_con.append(epi_row)
     def payoff(self, policy):
         keys = transform_matrix(policy, self.dep_mat)
@@ -132,12 +126,15 @@ class landscape:
         self.fitness_contribution()
         self.calc_landscape()   
     def summary(self):
-        max_global = max(self.lands.payoff)
-        min_global = min(self.lands.payoff)
+        max_global = max(self.lands.values())
+        min_global = min(self.lands.values())
         num_peaks = 0
-        for i in range(self.lands.shape[0]):
-            randomized_neighbors = find_neighbors(self.lands.policy[i])
-            if self.lands.loc[i, "payoff"] > np.max(self.lands.loc[randomized_neighbors, "payoff"]): num_peaks += 1
+        for current_row in self.lands.keys():
+            randomized_neighbors = find_neighbors(current_row)
+            counter = 0
+            for neighbor in randomized_neighbors:
+                if self.lands[current_row] < self.lands[neighbor]: counter += 1
+            if counter == 0: num_peaks += 1
         return([max_global, min_global, num_peaks])
 
 
@@ -164,36 +161,41 @@ def find_neighbors(policy):
     random_order = np.random.choice(range(len(policy)), replace = False, size = len(policy))
     for i in random_order:
         neighbor = list(policy)
-        if policy[i] == 1: neighbor[i] = 0
-        else: neighbor[i] = 1
-        neighbors.append(list2int(neighbor))
+        if policy[i] == '1': neighbor[i] = '0'
+        else: neighbor[i] = '1'
+        neighbors.append(''.join(neighbor))
     return(neighbors)
 
 class agent:
     def __init__(self, long_jump):
         self.long_jump = long_jump
     def search(self, lands, num_periods):
-        current_row = lands.loc[np.random.choice(lands.shape[0]),:]
-        global_max = lands.loc[np.argmax(lands.payoff),:]
-        log_short = [current_row]
-        log_long = [current_row]
+        current_row = np.random.choice(list(lands.keys()))
+        global_max = max(lands, key=lands.get)
+        log_short = [{"policy":current_row, "payoff":lands[current_row]}]
+        log_long = [{"policy":current_row, "payoff":lands[current_row]}]
         for j in range(num_periods):
-            if np.random.choice(["Walk", "Jump"], p = [1-long_jump, long_jump]) == "Jump": 
-                proposed_row = np.random.choice(lands.shape[0])
-            else:
-                randomized_neighbors = find_neighbors(current_row.policy)
+            # Local search or Jump?
+            if np.random.choice(["Walk", "Jump"], p = [1-long_jump, long_jump]) == "Walk":
+                randomized_neighbors = find_neighbors(current_row)
                 for proposed_row in randomized_neighbors:
-                    if lands.payoff[proposed_row] > current_row.payoff: break # weird but works
-            if lands.payoff[proposed_row] > current_row.payoff:
-                current_row = lands.loc[proposed_row,:]
-                log_short.append(current_row) #stores changes
-            log_long.append(current_row) #stores every period
-            if current_row.int_pol == global_max.int_pol & j < num_periods-1: 
-                for k in range(num_periods-j-1): log_long.append(current_row) # makes all dataframes the same length
-                break # avoid doing irrelevant calculations
-        log_short.append(global_max) # add global max for comparison later on
-        log_long.append(global_max) # add global max for comparison later on
-        reached_max = 1*(current_row.int_pol == global_max.int_pol)
+                    if lands[proposed_row] > lands[current_row]: break
+            else: proposed_row = np.random.choice(list(lands.keys())) #could be improved not past or current
+            # Store new position if higher
+            if lands[proposed_row] > lands[current_row]:
+                current_row = proposed_row
+                log_short.append({"policy":current_row, "payoff": lands[current_row]}) #stores changes
+            log_long.append({"policy":current_row, "payoff": lands[current_row]}) #stores every period
+            # Check if search is finished
+            if current_row == global_max:
+                if j < num_periods-1: # somehow the & did not work
+                    for k in range(num_periods-j-1): 
+                        log_long.append({"policy":current_row, "payoff": lands[current_row]}) # makes all dataframes the same length
+                    break # stop the main for-loop after global maximum is found
+        # Store data
+        log_short.append({"policy":global_max, "payoff": lands[global_max]}) # add global max for comparison later on
+        log_long.append({"policy":global_max, "payoff": lands[global_max]}) # add global max for comparison later on
+        reached_max = 1*(current_row == global_max)
         return([reached_max, len(log_short)-1, j, pd.DataFrame(log_short), pd.DataFrame(log_long)])
 
 
@@ -209,8 +211,8 @@ def run_simulation(num_reps, num_periods, Alice, Environment):
         all_num_trials = 0
         all_payoffs = np.zeros(num_periods+2)
         for j in range(num_reps):
-            Environment.reset() # 23 of 35s
-            reached_max, n_step, n_trial, o_short, o_long = Alice.search(lands = Environment.lands, num_periods = num_periods) # 7.5 of 33s
+            Environment.reset()
+            reached_max, n_step, n_trial, o_short, o_long = Alice.search(lands = Environment.lands, num_periods = num_periods)
             all_reached_max += reached_max
             all_num_steps += n_step
             all_num_trials += n_trial
@@ -246,7 +248,7 @@ all_reached_max, all_num_steps, all_num_trials, all_payoffs= run_simulation(num_
 print(100*all_reached_max/num_reps)
 print(all_num_steps/num_reps)
 print(all_num_trials/num_reps)
-print(round(time.time()-start_time,1))
+print(round(time.time()-start_time,2))
 
 
 # We also plot the growth in payoff as the agents search the landscape. The last value is the average of the global maxima. Clearly, the search process is still distante to reaching the highest peak on every search ocassion. 
@@ -257,25 +259,9 @@ print(round(time.time()-start_time,1))
 plt.scatter(range(num_periods+2), all_payoffs[:num_periods+2])
 
 
-# Below we time the simulations to have an understanding of what part takes the longest, the landscape building, or search. At low N and K, the landscape takes longer than the search. At higher N and K values, the opposite is true. 
+# Finally we create 1000 landscapes and see their characteristics. Although making 1000 landscapes takes around 3 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.
 
 # In[7]:
-
-
-Environment = landscape(n,k)    
-start_time = time.time()
-for i in range(num_reps): 
-    Environment.reset() # 90% from cal_lands
-print(time.time()-start_time)
-
-start_time = time.time()
-for i in range(num_reps): Alice.search(Environment.lands, num_periods) # searches 1 landscape only
-print(time.time()-start_time)
-
-
-# Finally we create 1000 landscapes and see their characteristics. Although making 1000 landscapes takes around 8 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.
-
-# In[8]:
 
 
 Environment = landscape(n,k)    
@@ -289,20 +275,17 @@ for i in range(num_reps):
     all_max.append(max_val)
     all_min.append(min_val)
     all_num_peaks.append(peaks)
-print(np.mean(all_max))
-print(np.mean(all_min))
-print(np.mean(all_num_peaks))
-print(min(all_num_peaks))
-print(max(all_num_peaks))
+print([round(np.mean(all_max),2), 0.5, round(np.mean(all_min),2)])
+print([min(all_num_peaks), round(np.mean(all_num_peaks),2), max(all_num_peaks)])
 plt.hist(all_num_peaks, bins=10, range=(0, 10))
-print(time.time()-start_time)
+print(round(time.time()-start_time,2))
 
 
-# Levinthal (1997) includes more analyzes. These are yet to be implmented here. In the future, I will add the myopic jumping as this is important for the paper. 
+# Levinthal (1997) includes more analyzes. These are yet to be implemented here. In the future, I will add the myopic jumping as this is important for the paper. 
 # 
 # **Note:** The code below produced the table of contents.
 
-# In[9]:
+# In[8]:
 
 
 get_ipython().run_cell_magic('javascript', '', "$.getScript('https://kmahelona.github.io/ipython_notebook_goodies/ipython_notebook_toc.js')")
