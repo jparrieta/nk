@@ -13153,8 +13153,8 @@ This function includes two variables N and K and outputs a NxN interdependency m
 
 <span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">dep_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> 
                 <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">inter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -13204,13 +13204,39 @@ This function includes two variables N and K and outputs a NxN interdependency m
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[1, 0, 1],
+<pre>array([[1, 1, 1],
        [0, 1, 1],
-       [1, 0, 1]])</pre>
+       [0, 0, 1]])</pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1.2.-Miscellaneous-function:-Int2Pol">1.2. Miscellaneous function: Int2Pol<a class="anchor-link" href="#1.2.-Miscellaneous-function:-Int2Pol">&#182;</a></h3><p>This is a miscellaneous function. It is presented here to avoid confusion. It will be use by the next functions.<br>
+This function takes an integer value and outputs a string of 0s and 1s of length N. This is important as the binary function of Python truncates any zero to the left of the most significant 1.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">int2pol</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">pol</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
+    <span class="n">pol</span> <span class="o">=</span> <span class="n">pol</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="c1"># removes the &#39;0b&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">))</span> <span class="o">+</span> <span class="n">pol</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -13229,15 +13255,15 @@ This function includes two variables N and K and outputs a NxN interdependency m
 <li>F1[1] = z1<br>
 Where z0 and z1 are numbers drawn from a uniform distribution. </li>
 </ul>
-<p>The second row is more complicated as there is one interdependency. Here we will have that the second and third policy values are needed to calculate the fitness contribution. For this we need a function with four values as there are four possible combinations of a and b. The functions have the form f2[b,a].</p>
+<p>The second row is more complicated as there is one interdependency. Here we will have that the second and third policy values are needed to calculate the fitness contribution. For this we need a function with four values as there are four possible combinations of a and b. The functions have the form f2[b,c].</p>
 <ul>
 <li>f2[00] = y0</li>
 <li>f2[01] = y1</li>
 <li>f2[10] = y2</li>
 <li>f2[11] = y3</li>
 </ul>
-<p>The final row has 3 interdependencies. Now the fitness contributions depends on the values of a, 2, and c. The fitness contribution has the for f3[c,a,b]. To depict it, we draw a truth table.</p>
-<p>c  a  b  |  f3<br>
+<p>The final row has 3 interdependencies. Now the fitness contributions depends on the values of a, b, and c. The fitness contribution has the for f3[a,b,c]. To depict it, we draw a truth table.</p>
+<p>a  b  c  |  f3<br>
 0  0  0  |  x0<br>
 0  0  1  |  x1<br>
 0  1  0  |  x2<br>
@@ -13249,76 +13275,8 @@ Where z0 and z1 are numbers drawn from a uniform distribution. </li>
 <p>To create the fitness contributions we need a function that takes one interdependence matrix and outputs the fitness contributions functions for each position. That is, a function that outputs the two f1, four f2, and eight f3.<br>
 The function later on should have a structure such that if one tells it that a = 0 and b = 1 it can give f2[b,a] = y2. For this the ideal structure is a list of dictionaries. Each fitness contribution function is a dictionary that one gives the values and it outputs the  and the dictionaries are joined together in a list. Below you find a function that does just that.</p>
 <h3 id="2.2-Fitness-contribution-generator">2.2 Fitness contribution generator<a class="anchor-link" href="#2.2-Fitness-contribution-generator">&#182;</a></h3><p>The function first creates an empty list. This list will be filled with the dictionaries of fitness contribution functions.<br>
-The next step is entering a for-loop over the N rows of the interdependency matrix. For each iteration in the for-loop, we do a list comprehension where the binary value of the counter is stored as the key of a dictionary with the value drawn from a uniform distribution. The second for-loop will go over 2^k+1 iterations, where k is the number of 1's in the off-diagonal. At the end the function output a list of with the dictionaries as its entry.<br>
+The next step is entering a for-loop over the N rows of the interdependency matrix. For each iteration in the for-loop, we do a list comprehension where the binary value of the counter is stored as the key of a dictionary with the value drawn from a uniform distribution. The second for-loop will go over 2^q iterations, where q is the number of 1's in the row. As in the example=, q is on average k+1 but not always. At the end the function output a list of with the dictionaries as its entry.<br>
 You see the code below and the outputs is the list of dictionaries of the dependency matrix created in the prior section.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fitness_contribution</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">):</span>
-    <span class="n">fit_con</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> 
-        <span class="n">epi_row</span> <span class="o">=</span> <span class="p">{</span><span class="nb">bin</span><span class="p">(</span><span class="n">j</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))}</span>
-        <span class="n">fit_con</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epi_row</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">fit_con</span><span class="p">)</span>
-
-<span class="n">fit_con</span> <span class="o">=</span> <span class="n">fitness_contribution</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
-<span class="n">fit_con</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;0b0&#39;: 0.6679285645135936,
-  &#39;0b1&#39;: 0.023185584942832405,
-  &#39;0b10&#39;: 0.39266929469305156,
-  &#39;0b11&#39;: 0.9061631550414734},
- {&#39;0b0&#39;: 0.20725522070943825,
-  &#39;0b1&#39;: 0.908181434031553,
-  &#39;0b10&#39;: 0.09967881848014404,
-  &#39;0b11&#39;: 0.6780128398463998},
- {&#39;0b0&#39;: 0.40030013448495605,
-  &#39;0b1&#39;: 0.29919388868473307,
-  &#39;0b10&#39;: 0.08551169571331507,
-  &#39;0b11&#39;: 0.4275000053834487}]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="3.-Calculate-policy-payoffs">3. Calculate policy payoffs<a class="anchor-link" href="#3.-Calculate-policy-payoffs">&#182;</a></h2><p>The next step is to calculate the payoff of a policy based upon the fitness contribution functions. To do this we require two things. First to calculate the payoff contribution of every value in a policy and then sum all of them together. We start with the first task.</p>
-<h3 id="3.1-Transform-Row">3.1 Transform Row<a class="anchor-link" href="#3.1-Transform-Row">&#182;</a></h3><p>Let's continue with the example. But now we have the polict P = [0,1,1].<br>
-In the case of the first value we know we should get z0 as fitness contribution. In the second row, y2 and so on. To do this we need to create a function that takes the values of the policy and matches them to the values other values that are interdependent with it.<br>
-THe function below is given two inputs, a policy and a row of a dependency matrix.  It creates an empty list and starts to populate it. It does this by starting a for-loop for every element of the policy. If the item of that index is 1 in the interdependency row then it appends the value of policy to the list. If not, it continues to the next policy value. In this way, only the interdependent items are stored. With this, the programs has a list with items that are relevant to calculate the fitness contribution for this policy.<br>
-For example, in the case from before we would have as an output of the for-loop [0] in the first row, [1,1] in the second row and [1,0,1] for the last row. This output is called interact_row.
-These values however are not understandable by the dictionaries of the fitness contribution. The last rows of the function translate the list into a binary value. So that later the dictonary can be queried.<br>
-The process starts by starting trans_pol = 0. This value will store the key value for the dictionary. Then a for-loop starts. The for-loop has the range reversed so that the we keep the items to the left of the list being more significant. This is important because in the the next step we multiply the value of interact_row[i] with the 2^index value. By reversing the order we have that the item most to left in the list will be multiplied by 2^3 if we follow the example from before, the item next to it by 2^2 and so on. The product of the multiplications is added on every loop to the trans_pol value. At the end we have a decimal value. We transform the decimal value and the output is a key we can use in the dictionaries from the fitness contribution. For example for the first row from before we get '0b0', for the second '0b11', and for the last row, '0b101'.<br>
-Below you see an example of this function for the same policy we have used in this example but for the randomly generate dependency matrix from before.</p>
 
 </div>
 </div>
@@ -13328,17 +13286,16 @@ Below you see an example of this function for the same policy we have used in th
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">list2int</span><span class="p">(</span><span class="n">pol_list</span><span class="p">):</span>
-    <span class="n">pol_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-    <span class="n">pol_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="mi">2</span><span class="o">**</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">pol_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pol_list</span><span class="p">))])</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fitness_contribution</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">):</span>
+    <span class="n">fit_con</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> 
+        <span class="n">epi_row</span> <span class="o">=</span> <span class="p">{</span><span class="n">int2pol</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="nb">sum</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))}</span>
+        <span class="n">fit_con</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epi_row</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">fit_con</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_row</span><span class="p">):</span>
-    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span> <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">trans_pol</span> <span class="o">=</span> <span class="n">list2int</span><span class="p">(</span><span class="n">interact_row</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">trans_pol</span><span class="p">))</span>
-
-<span class="n">transform_row</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">dep_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">fit_con</span> <span class="o">=</span> <span class="n">fitness_contribution</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">)</span>
+<span class="n">fit_con</span>
 </pre></div>
 
     </div>
@@ -13357,7 +13314,19 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0b1&#39;</pre>
+<pre>[{&#39;000&#39;: 0.6746735007698917,
+  &#39;001&#39;: 0.4894029968492345,
+  &#39;010&#39;: 0.5101593444706184,
+  &#39;011&#39;: 0.7024110715169483,
+  &#39;100&#39;: 0.523773712515925,
+  &#39;101&#39;: 0.49143563925983247,
+  &#39;110&#39;: 0.8017200115113896,
+  &#39;111&#39;: 0.16459085631558612},
+ {&#39;00&#39;: 0.3716012069787368,
+  &#39;01&#39;: 0.22739056161446103,
+  &#39;10&#39;: 0.8368758825296619,
+  &#39;11&#39;: 0.22742526100879779},
+ {&#39;0&#39;: 0.9676676621219938, &#39;1&#39;: 0.30153127009779845}]</pre>
 </div>
 
 </div>
@@ -13369,7 +13338,14 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.2-Transform-Matrix">3.2 Transform Matrix<a class="anchor-link" href="#3.2-Transform-Matrix">&#182;</a></h3><p>The transform_row function is called by a transform_matrix function whose job is to take a policy and output a set of keys for the the list of fitness contributions. To do this basically what it does is to to call the transform_row N times can fill out a list with the output of each of the calls of the function. In the example from above we would have: ['0b0',  '0b11', '0b101'] as an output. Below you see an example of the function working.</p>
+<h2 id="3.-Calculate-policy-payoffs">3. Calculate policy payoffs<a class="anchor-link" href="#3.-Calculate-policy-payoffs">&#182;</a></h2><p>The next step is to calculate the payoff of a policy based upon the fitness contribution functions. To do this we require two things. First to calculate the payoff contribution of every value in a policy and then sum all of them together. We start with the first task.</p>
+<h3 id="3.1-Transform-Row">3.1 Transform Row<a class="anchor-link" href="#3.1-Transform-Row">&#182;</a></h3><p>Let's continue with the example. But now we have the policy P = '101'. This policy has three elements and is stored as a string of 0s and 1s.<br>
+In the case of the first value we know we should get z0 as fitness contribution. In the second row, y2 and so on. To do this we need to create a function that takes the values of the policy and matches them to the values other values that are interdependent with it.<br>
+The function below is given two inputs, a policy and a row of a dependency matrix.  It creates an empty list and starts to populate it. It does this by starting a for-loop for every element of the policy. If the item of that index is 1 in the interdependency row then it appends the value of policy to the list. If not, it continues to the next policy value. In this way, only the interdependent items are stored. With this, the programs has a list with items that are relevant to calculate the fitness contribution for this policy.<br>
+For example, in the case from before we would have as an output of the for-loop '1' in the first row, '01' in the second row and '101' for the last row. This output is called interact_row.<br>
+These values however are not understandable by the dictionaries of the fitness contribution. The last rows of the function translate the list into a binary value. So that later the dictonary can be queried.<br>
+The process starts by starting trans_pol = 0. This value will store the key value for the dictionary. Then a for-loop starts. The for-loop has the range reversed so that the we keep the items to the left of the list being more significant. This is important because in the the next step we multiply the value of interact_row[i] with the 2^index value. By reversing the order we have that the item most to left in the list will be multiplied by 2^3 if we follow the example from before, the item next to it by 2^2 and so on. The product of the multiplications is added on every loop to the trans_pol value. At the end we have a decimal value. We transform the decimal value and the output is a key we can use in the dictionaries from the fitness contribution. For example for the first row from before we get '1', for the second '01', and for the last row, '101'.<br>
+Below you see an example of this function for the same policy we have used in this example but for the randomly generate dependency matrix from before.</p>
 
 </div>
 </div>
@@ -13379,11 +13355,13 @@ Below you see an example of this function for the same policy we have used in th
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">):</span>
-    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">))]</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_row</span><span class="p">):</span>
+    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span> <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">trans_pol</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">pol_i</span> <span class="ow">in</span> <span class="n">interact_row</span><span class="p">:</span> <span class="n">trans_pol</span> <span class="o">+=</span> <span class="n">pol_i</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">trans_pol</span><span class="p">)</span>
 
-<span class="n">transform_matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">dep_mat</span><span class="p">)</span>
+<span class="n">transform_row</span><span class="p">(</span><span class="s1">&#39;101&#39;</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13402,7 +13380,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;0b11&#39;, &#39;0b1&#39;, &#39;0b11&#39;]</pre>
+<pre>&#39;01&#39;</pre>
 </div>
 
 </div>
@@ -13414,7 +13392,7 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.3-Payoff">3.3 Payoff<a class="anchor-link" href="#3.3-Payoff">&#182;</a></h3><p>The payoff function has three inputs, the policy for which to calculate a payoff, the interdependency matrix, and the list of fitness contributions.  The first action it does it to transform the policy into keys to the fitness cotnribution dictionaries. After this is done it sums the entries of all the fitness contributions of the key values and divides the sum by the length of the policy. The last part is done to get a value between 0 and 1. Below we see and example of the code working.</p>
+<h3 id="3.2-Transform-Matrix">3.2 Transform Matrix<a class="anchor-link" href="#3.2-Transform-Matrix">&#182;</a></h3><p>The transform_row function is called by a transform_matrix function whose job is to take a policy and output a set of keys for the the list of fitness contributions. To do this basically what it does is to to call the transform_row N times can fill out a list with the output of each of the calls of the function. In the example from above we would have: ['0b0',  '0b11', '0b101'] as an output. Below you see an example of the function working.</p>
 
 </div>
 </div>
@@ -13424,12 +13402,11 @@ Below you see an example of this function for the same policy we have used in th
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">payoff</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">,</span><span class="n">fit_con</span><span class="p">):</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">)</span>
-    <span class="n">pay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">fit_con</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))])</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pay</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">):</span>
+    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">))]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
 
-<span class="n">payoff</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">dep_mat</span><span class="p">,</span><span class="n">fit_con</span><span class="p">)</span>
+<span class="n">transform_matrix</span><span class="p">(</span><span class="s1">&#39;101&#39;</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13448,7 +13425,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.7472815314854917</pre>
+<pre>[&#39;101&#39;, &#39;01&#39;, &#39;1&#39;]</pre>
 </div>
 
 </div>
@@ -13460,9 +13437,7 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="4.-Make-full-landscape">4. Make full-landscape<a class="anchor-link" href="#4.-Make-full-landscape">&#182;</a></h2><p>Now that we can calculate the payoff for one policy we can make the full-landscape. However, to calculate the landscape we need to make a function that takes integers and makes policies.</p>
-<h3 id="4.1-Integer-to-List">4.1 Integer to List<a class="anchor-link" href="#4.1-Integer-to-List">&#182;</a></h3><p>This function takes two arguments first a number in integer and then the length of the desired list. This is important because when one transforms an integer to binary in Python, the output cuts the 0s to the left. So the policy length is altered. This function prevents that.  Below you can see an example.</p>
-<p><strong>Note:</strong> In prior functions we had to translate policies from list to integer, this function does the opposite. If we used this functions only here, then it would be a waste. However, there are benefits to having policies as lists. Especially when regarding agents searching in the landscape.</p>
+<h3 id="3.3-Payoff">3.3 Payoff<a class="anchor-link" href="#3.3-Payoff">&#182;</a></h3><p>The payoff function has three inputs, the policy for which to calculate a payoff, the interdependency matrix, and the list of fitness contributions.  The first action it does it to transform the policy into keys to the fitness cotnribution dictionaries. After this is done it sums the entries of all the fitness contributions of the key values and divides the sum by the length of the policy. The last part is done to get a value between 0 and 1. Below we see and example of the code working.</p>
 
 </div>
 </div>
@@ -13472,13 +13447,12 @@ Below you see an example of this function for the same policy we have used in th
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">int2list</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="n">pol_str</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
-    <span class="n">policy</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span> <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pol_str</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">policy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span><span class="o">+</span><span class="n">policy</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">payoff</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">,</span><span class="n">fit_con</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">)</span>
+    <span class="n">pay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">fit_con</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))])</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pay</span><span class="p">)</span>
 
-<span class="n">int2list</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">payoff</span><span class="p">(</span><span class="s1">&#39;101&#39;</span><span class="p">,</span><span class="n">dep_mat</span><span class="p">,</span><span class="n">fit_con</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13497,7 +13471,7 @@ Below you see an example of this function for the same policy we have used in th
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[0, 1, 0, 1]</pre>
+<pre>0.3401191569906973</pre>
 </div>
 
 </div>
@@ -13509,7 +13483,8 @@ Below you see an example of this function for the same policy we have used in th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="4.2-Calculate-Landscape">4.2 Calculate Landscape<a class="anchor-link" href="#4.2-Calculate-Landscape">&#182;</a></h3><p>Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dataframe. The dataframe consists of three entries per policy: The policy in list-value, the policy in integer-value, and the payoff. The integer value of the policy is used for accessing the dataframe, the list-value for searching the landscape.<br>
+<h2 id="4.-Make-full-landscape">4. Make full-landscape<a class="anchor-link" href="#4.-Make-full-landscape">&#182;</a></h2><p>Now that we can calculate the payoff for one policy we can make the full-landscape. However, to calculate the landscape we need to make a function that takes integers and makes policies.</p>
+<h3 id="4.1-Calculate-Landscape">4.1 Calculate Landscape<a class="anchor-link" href="#4.1-Calculate-Landscape">&#182;</a></h3><p>Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dataframe. The dataframe consists of three entries per policy: The policy in list-value, the policy in integer-value, and the payoff. The integer value of the policy is used for accessing the dataframe, the list-value for searching the landscape.<br>
 Below you will see an example.</p>
 
 </div>
@@ -13521,11 +13496,12 @@ Below you will see an example.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">):</span>
-    <span class="n">land</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">land</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fit_con</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">pol_list</span> <span class="o">=</span> <span class="n">int2list</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-        <span class="n">land</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;int_pol&#39;</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pol_list</span><span class="p">),</span> <span class="s1">&#39;payoff&#39;</span><span class="p">:</span> <span class="n">payoff</span><span class="p">(</span><span class="n">pol_list</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)})</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">land</span><span class="p">))</span>
+        <span class="n">pol</span> <span class="o">=</span> <span class="n">int2pol</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">land</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span> <span class="o">=</span> <span class="n">payoff</span><span class="p">(</span><span class="n">pol</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">land</span><span class="p">)</span>
 
 <span class="n">lands</span> <span class="o">=</span> <span class="n">calc_landscape</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">,</span> <span class="n">fit_con</span><span class="p">)</span>
 <span class="n">lands</span>
@@ -13545,82 +13521,16 @@ Below you will see an example.</p>
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>int_pol</th>
-      <th>payoff</th>
-      <th>policy</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>0.425161</td>
-      <td>[0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>0.410187</td>
-      <td>[0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>0.389303</td>
-      <td>[0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3</td>
-      <td>0.333464</td>
-      <td>[0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>4</td>
-      <td>0.228479</td>
-      <td>[1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>5</td>
-      <td>0.747282</td>
-      <td>[1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>6</td>
-      <td>0.192620</td>
-      <td>[1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>7</td>
-      <td>0.670559</td>
-      <td>[1, 1, 1]</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;000&#39;: 0.6713141232902075,
+ &#39;001&#39;: 0.33944160952049796,
+ &#39;010&#39;: 0.7715676297074248,
+ &#39;011&#39;: 0.41045586754118146,
+ &#39;100&#39;: 0.6210141938722185,
+ &#39;101&#39;: 0.3401191569906973,
+ &#39;110&#39;: 0.8687545187210151,
+ &#39;111&#39;: 0.23118246247406077}</pre>
 </div>
 
 </div>
@@ -13651,12 +13561,12 @@ Below you see an example.</p>
     <span class="n">random_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">random_order</span><span class="p">:</span>
         <span class="n">neighbor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2int</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
     <span class="k">return</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
 
-<span class="n">find_neighbors</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">find_neighbors</span><span class="p">(</span><span class="s1">&#39;101&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13675,7 +13585,7 @@ Below you see an example.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[4, 1, 7]</pre>
+<pre>[&#39;100&#39;, &#39;001&#39;, &#39;111&#39;]</pre>
 </div>
 
 </div>
@@ -13698,12 +13608,15 @@ Below you see an example.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="n">lands</span><span class="p">):</span>
-    <span class="n">max_global</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">)</span>
-    <span class="n">min_global</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">payoff</span><span class="p">)</span>
+    <span class="n">max_global</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">min_global</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">num_peaks</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">randomized_neighbors</span> <span class="o">=</span> <span class="n">find_neighbors</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;payoff&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">randomized_neighbors</span><span class="p">,</span> <span class="s2">&quot;payoff&quot;</span><span class="p">]):</span> <span class="n">num_peaks</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">current_row</span> <span class="ow">in</span> <span class="n">lands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">randomized_neighbors</span> <span class="o">=</span> <span class="n">find_neighbors</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">randomized_neighbors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lands</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]:</span> <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">num_peaks</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span><span class="p">([</span><span class="n">max_global</span><span class="p">,</span> <span class="n">min_global</span><span class="p">,</span> <span class="n">num_peaks</span><span class="p">])</span>
 
 <span class="n">summary</span><span class="p">(</span><span class="n">lands</span><span class="p">)</span>
@@ -13725,7 +13638,7 @@ Below you see an example.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[0.7472815314854917, 0.19261993629550356, 2]</pre>
+<pre>[0.8687545187210151, 0.23118246247406077, 1]</pre>
 </div>
 
 </div>
@@ -13772,7 +13685,7 @@ Below you see an example.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[0.778249620309681, 0.24948975392466677, 2]</pre>
+<pre>[0.7879651285162208, 0.21915591222282352, 6]</pre>
 </div>
 
 </div>
@@ -13803,401 +13716,72 @@ Below you see an example.</p>
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>int_pol</th>
-      <th>payoff</th>
-      <th>policy</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>0.500237</td>
-      <td>[0, 0, 0, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>0.440791</td>
-      <td>[0, 0, 0, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>0.641528</td>
-      <td>[0, 0, 0, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3</td>
-      <td>0.582081</td>
-      <td>[0, 0, 0, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>4</td>
-      <td>0.388620</td>
-      <td>[0, 0, 0, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>5</td>
-      <td>0.279790</td>
-      <td>[0, 0, 0, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>6</td>
-      <td>0.529910</td>
-      <td>[0, 0, 0, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>7</td>
-      <td>0.421080</td>
-      <td>[0, 0, 0, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>8</td>
-      <td>0.299198</td>
-      <td>[0, 0, 1, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>9</td>
-      <td>0.385091</td>
-      <td>[0, 0, 1, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>10</td>
-      <td>0.574890</td>
-      <td>[0, 0, 1, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>11</td>
-      <td>0.660782</td>
-      <td>[0, 0, 1, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>12</td>
-      <td>0.250589</td>
-      <td>[0, 0, 1, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>13</td>
-      <td>0.453249</td>
-      <td>[0, 0, 1, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>14</td>
-      <td>0.526280</td>
-      <td>[0, 0, 1, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>15</td>
-      <td>0.728940</td>
-      <td>[0, 0, 1, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>16</td>
-      <td>0.415411</td>
-      <td>[0, 1, 0, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>17</td>
-      <td>0.489468</td>
-      <td>[0, 1, 0, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>18</td>
-      <td>0.372889</td>
-      <td>[0, 1, 0, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>19</td>
-      <td>0.446946</td>
-      <td>[0, 1, 0, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>20</td>
-      <td>0.442819</td>
-      <td>[0, 1, 0, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>21</td>
-      <td>0.467492</td>
-      <td>[0, 1, 0, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>22</td>
-      <td>0.400297</td>
-      <td>[0, 1, 0, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>23</td>
-      <td>0.424970</td>
-      <td>[0, 1, 0, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>24</td>
-      <td>0.436612</td>
-      <td>[0, 1, 1, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>25</td>
-      <td>0.513750</td>
-      <td>[0, 1, 1, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>26</td>
-      <td>0.533283</td>
-      <td>[0, 1, 1, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>27</td>
-      <td>0.610421</td>
-      <td>[0, 1, 1, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>28</td>
-      <td>0.249490</td>
-      <td>[0, 1, 1, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>29</td>
-      <td>0.443395</td>
-      <td>[0, 1, 1, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>34</td>
-      <td>0.778250</td>
-      <td>[1, 0, 0, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>35</td>
-      <td>0.628726</td>
-      <td>[1, 0, 0, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>36</td>
-      <td>0.524344</td>
-      <td>[1, 0, 0, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>37</td>
-      <td>0.325436</td>
-      <td>[1, 0, 0, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>38</td>
-      <td>0.666632</td>
-      <td>[1, 0, 0, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>39</td>
-      <td>0.467725</td>
-      <td>[1, 0, 0, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>40</td>
-      <td>0.450168</td>
-      <td>[1, 0, 1, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>41</td>
-      <td>0.445982</td>
-      <td>[1, 0, 1, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>42</td>
-      <td>0.707015</td>
-      <td>[1, 0, 1, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>43</td>
-      <td>0.702830</td>
-      <td>[1, 0, 1, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>44</td>
-      <td>0.401558</td>
-      <td>[1, 0, 1, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>45</td>
-      <td>0.514140</td>
-      <td>[1, 0, 1, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>46</td>
-      <td>0.658406</td>
-      <td>[1, 0, 1, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>47</td>
-      <td>0.770988</td>
-      <td>[1, 0, 1, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>48</td>
-      <td>0.452642</td>
-      <td>[1, 1, 0, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>49</td>
-      <td>0.482691</td>
-      <td>[1, 1, 0, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>50</td>
-      <td>0.411118</td>
-      <td>[1, 1, 0, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>51</td>
-      <td>0.441166</td>
-      <td>[1, 1, 0, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>52</td>
-      <td>0.480050</td>
-      <td>[1, 1, 0, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>53</td>
-      <td>0.460715</td>
-      <td>[1, 1, 0, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>54</td>
-      <td>0.438526</td>
-      <td>[1, 1, 0, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>55</td>
-      <td>0.419191</td>
-      <td>[1, 1, 0, 1, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>56</th>
-      <td>56</td>
-      <td>0.489089</td>
-      <td>[1, 1, 1, 0, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>57</td>
-      <td>0.522218</td>
-      <td>[1, 1, 1, 0, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>58</td>
-      <td>0.566917</td>
-      <td>[1, 1, 1, 0, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>59</td>
-      <td>0.600046</td>
-      <td>[1, 1, 1, 0, 1, 1]</td>
-    </tr>
-    <tr>
-      <th>60</th>
-      <td>60</td>
-      <td>0.301966</td>
-      <td>[1, 1, 1, 1, 0, 0]</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>61</td>
-      <td>0.451863</td>
-      <td>[1, 1, 1, 1, 0, 1]</td>
-    </tr>
-    <tr>
-      <th>62</th>
-      <td>62</td>
-      <td>0.379795</td>
-      <td>[1, 1, 1, 1, 1, 0]</td>
-    </tr>
-    <tr>
-      <th>63</th>
-      <td>63</td>
-      <td>0.529691</td>
-      <td>[1, 1, 1, 1, 1, 1]</td>
-    </tr>
-  </tbody>
-</table>
-<p>64 rows × 3 columns</p>
-</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;000000&#39;: 0.41911084818050065,
+ &#39;000001&#39;: 0.4638026567291653,
+ &#39;000010&#39;: 0.3070394887016913,
+ &#39;000011&#39;: 0.4652086744691767,
+ &#39;000100&#39;: 0.4688951080560196,
+ &#39;000101&#39;: 0.30642069556592677,
+ &#39;000110&#39;: 0.4156739028852829,
+ &#39;000111&#39;: 0.3666768676140109,
+ &#39;001000&#39;: 0.49230742761265633,
+ &#39;001001&#39;: 0.37409100877228485,
+ &#39;001010&#39;: 0.4135075175712396,
+ &#39;001011&#39;: 0.4087684759496889,
+ &#39;001100&#39;: 0.6137832110661898,
+ &#39;001101&#39;: 0.48721242437084994,
+ &#39;001110&#39;: 0.45659445786587427,
+ &#39;001111&#39;: 0.4435010483893552,
+ &#39;010000&#39;: 0.5325105528802224,
+ &#39;010001&#39;: 0.577202361428887,
+ &#39;010010&#39;: 0.39005378146709574,
+ &#39;010011&#39;: 0.5482229672345812,
+ &#39;010100&#39;: 0.3816303247129163,
+ &#39;010101&#39;: 0.21915591222282352,
+ &#39;010110&#39;: 0.43907739577878335,
+ &#39;010111&#39;: 0.3900803605075114,
+ &#39;011000&#39;: 0.5486321635079137,
+ &#39;011001&#39;: 0.43041574466754207,
+ &#39;011010&#39;: 0.5592599590815162,
+ &#39;011011&#39;: 0.5545209174599655,
+ &#39;011100&#39;: 0.583795204908186,
+ &#39;011101&#39;: 0.45722441821284604,
+ &#39;011110&#39;: 0.4045877557733233,
+ &#39;011111&#39;: 0.3914943462968042,
+ &#39;100000&#39;: 0.6138638428531044,
+ &#39;100001&#39;: 0.5228389911782361,
+ &#39;100010&#39;: 0.44380644660832735,
+ &#39;100011&#39;: 0.46625897215227996,
+ &#39;100100&#39;: 0.6785484010756879,
+ &#39;100101&#39;: 0.49755753126163665,
+ &#39;100110&#39;: 0.6002462631791978,
+ &#39;100111&#39;: 0.5327327705839673,
+ &#39;101000&#39;: 0.6464821267554712,
+ &#39;101001&#39;: 0.4869482906824357,
+ &#39;101010&#39;: 0.666512601272335,
+ &#39;101011&#39;: 0.6204561424181204,
+ &#39;101100&#39;: 0.5077690026673953,
+ &#39;101101&#39;: 0.40241732053754137,
+ &#39;101110&#39;: 0.47430221687359714,
+ &#39;101111&#39;: 0.48242791196256407,
+ &#39;110000&#39;: 0.5486428035368498,
+ &#39;110001&#39;: 0.4576179518619815,
+ &#39;110010&#39;: 0.576642834667016,
+ &#39;110011&#39;: 0.5990953602109687,
+ &#39;110100&#39;: 0.5036677643398821,
+ &#39;110101&#39;: 0.3226768945258307,
+ &#39;110110&#39;: 0.44560710100179607,
+ &#39;110111&#39;: 0.37809360840656553,
+ &#39;111000&#39;: 0.7879651285162208,
+ &#39;111001&#39;: 0.6284312924431853,
+ &#39;111010&#39;: 0.6407785338121448,
+ &#39;111011&#39;: 0.59472207495793,
+ &#39;111100&#39;: 0.558111443433601,
+ &#39;111101&#39;: 0.45275976130374695,
+ &#39;111110&#39;: 0.337345221178879,
+ &#39;111111&#39;: 0.3454709162678458}</pre>
 </div>
 
 </div>
@@ -14240,10 +13824,10 @@ Below you see an example.</p>
 
 
 
-<div id="466f30a2-b09f-4cda-a962-2037eec8c735"></div>
+<div id="fc384774-fe89-4eb9-9078-aa72268e718a"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#466f30a2-b09f-4cda-a962-2037eec8c735');
+var element = $('#fc384774-fe89-4eb9-9078-aa72268e718a');
 $.getScript('https://kmahelona.github.io/ipython_notebook_goodies/ipython_notebook_toc.js')
 
 </script>
