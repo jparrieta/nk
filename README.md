@@ -1,7 +1,7 @@
 # bandits
 This repo includes the code for running some of the seminal papers on organizational learning under complexity.    
 
-Currently, it includes the code for creating landscapes a lá Levinthal (1997)
+Currently, it includes the code for creating landscapes a lá Levinthal (1997).
 
 The next code to be included is the local search logic after that Csaszar and Levinthal (2016).
 
@@ -13,7 +13,7 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 
 # log  
   
-**191001:** Improved landscape generation, 10x faster
+**191001:** Improved landscape generation, 10x faster.  
 **190930:** Separated the create landscape tutorial from the full Levinthal (1997) tutorial.  
 **190929:** Optimized search procedure.  
 **190927:** Included the search functionality. Still no myopia.  
