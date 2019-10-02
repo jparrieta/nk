@@ -13,7 +13,7 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 
 # log  
 
-**191002:** Code 10x faster!, a.k.a never use np.random.choice
+**191002:** Code 10x faster!, a.k.a never use np.random.choice.  
 **191001:** Sped up from quadratic to linear time in N and K.  
 **190930:** Separated the create landscape tutorial from the full Levinthal (1997) tutorial.  
 **190929:** Optimized search procedure.  
