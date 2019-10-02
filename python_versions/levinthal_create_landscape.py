@@ -1,22 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Tutorial on Levinthal (1997)
+# # Tutorial on Creating Rugged Landscapes
 # 
-# In this tutorial, you will be introduced to a simple model that replicates the main finding from the paper by Dan Levinthal, published in 1997 in Management Science. 
-# 
-# This tutorial provides a step by step description on the logic about how to build NK landscapes.
+# In this tutorial, you will be introduced to a simple model to create NK landscapes following Levinthal (1997). The tutorial does not include search in rugged landscapes, just the creation of the landscapes. You can find a code with the search process in the levinthal.ipynb file in this repository.  
 # 
 # **Reference:** Levinthal, D. A. (1997). Adaptation on rugged landscapes. Management science, 43(7), 934-950.
 
 # <h1 id="tocheading">Table of Contents</h1>
 # <div id="toc"></div>
-# <script type="text/javascript" src="https://raw.github.com/kmahelona/ipython_notebook_goodies/master/ipython_notebook_toc.js">
 
-# # NK Landscape
+# # NK landscape
 # In Levinthal (1997) the agent is quite simple. The environment does have some intricancies. 
 # 
-# ## 1. Create Dependencies
+# ## 1. Create dependencies
 # The k interdependencies in Levinthal's are created at random. Basically, one needs a matrix where the diagonal has a 1 and the off-diagonal has k ones and n-k zeroes. A one represents an interdependency and a zero the lack of it.  
 # This function includes two variables N and K and outputs a NxN interdependency matrix. 
 
@@ -27,11 +24,16 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def create_dependencies(n, k):
+def create_dependencies(n, k, land_style):
     dep_mat = np.zeros((n,n)).astype(int)
-    inter = np.random.choice([1]*k*n+[0]*(n-k-1)*n, replace = False, size = n*(n-1))
+    inter_row = [1]*k+[0]*(n-k-1) # number of off-diagonals 1s and 0s
+    if land_style == "Rand_mat": 
+        inter = np.random.choice(inter_row*n, replace = False, size = n*(n-1))
     for i in range(n):
-        for j in range(n):
+        if land_style == "Rand_row": inter = np.random.choice(inter_row, replace = False, size = (n-1))
+        elif land_style == "Levinthal": inter = inter_row # The original order is the one from Levinthal (1997)
+        range_row = list(range(n)[i:])+list(range(n)[:i])
+        for j in range_row:
             if i != j: 
                 dep_mat[i][j] = inter[0]
                 inter = inter[1:]
@@ -47,7 +49,8 @@ def create_dependencies(n, k):
 
 n = 3
 k = 1
-dep_mat = create_dependencies(n, k)
+land_style = "Rand_mat"
+dep_mat = create_dependencies(n, k, land_style)
 
 dep_mat
 
@@ -65,8 +68,10 @@ def int2pol(pol_int, n):
     if len(pol) < n: pol = '0'*(n-len(pol)) + pol
     return(pol)
 
+int2pol(pol_int = 5, n = 4)
 
-# ## 2. Fitness Contributions
+
+# ## 2. Fitness contributions
 # The second step is building the fitness contributions for each item in the interdependency matrix. Before showing the code, it is important to present the logic of it, here we do so by an example.
 # 
 # ### 2.1 Example
@@ -112,8 +117,7 @@ def int2pol(pol_int, n):
 
 def fitness_contribution(dep_mat):
     fit_con = []
-    n = len(dep_mat)
-    for i in range(n): 
+    for i in range(len(dep_mat)): 
         epi_row = {int2pol(j,sum(dep_mat[i])): np.random.random() for j in range(2**sum(dep_mat[i]))}
         fit_con.append(epi_row)
     return(fit_con)
@@ -241,7 +245,8 @@ def summary(lands):
 summary(lands)
 
 
-# # Create Landscape from Scratch
+# # Create landscape from scratch  
+#   
 # Below you can find the short way of creating the landscape from scratch
 
 # In[11]:
@@ -249,7 +254,8 @@ summary(lands)
 
 n = 6
 k = 2
-dep_mat = create_dependencies(n, k)
+land_style = "Rand_row" # "Levinthal", "Rand_mat", "Rand_row"
+dep_mat = create_dependencies(n, k, land_style)
 fit_con = fitness_contribution(dep_mat)
 Environment = calc_landscape(dep_mat, fit_con)    
 
@@ -262,13 +268,55 @@ summary(Environment)
 Environment
 
 
+# # Characterize landscapes  
+#   
+# Below we characterize a thousand landscapes by describing their maxima, minima, and number of peaks 
+
+# In[13]:
+
+
+import time
+start_time = time.time()
+all_max = []
+all_min = []
+all_num_peaks = []
+num_reps = 1000
+for i in range(num_reps): 
+    dep_mat = create_dependencies(n, k, land_style)
+    fit_con = fitness_contribution(dep_mat)
+    Environment = calc_landscape(dep_mat, fit_con)   
+    max_val, min_val, peaks = summary(Environment)
+    all_max.append(max_val)
+    all_min.append(min_val)
+    all_num_peaks.append(peaks)
+print("Computation time: "+ str(round(time.time()-start_time, 2)) + " s")
+
+
+# In[14]:
+
+
+plt.hist(all_min)
+
+
+# In[15]:
+
+
+plt.hist(all_max)
+
+
+# In[16]:
+
+
+plt.hist(all_num_peaks)
+
+
 # # Search
 # With the environment finished it is time to search in this rugged landscape. 
 # 
 #   
 # **Note:** The code below builds the table of content.
 
-# In[13]:
+# In[18]:
 
 
 get_ipython().run_cell_magic('javascript', '', "$.getScript('https://kmahelona.github.io/ipython_notebook_goodies/ipython_notebook_toc.js')")
