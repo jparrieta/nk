@@ -13,7 +13,7 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 
 # log  
   
-**191001:** Code 10x faster, with direct replication of Figure 1, and Myopic search.  
+**191001:** Code 10x faster.  
 **190930:** Separated the create landscape tutorial from the full Levinthal (1997) tutorial.  
 **190929:** Optimized search procedure.  
 **190927:** Included the search functionality. Still no myopia.  
