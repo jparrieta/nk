@@ -13134,9 +13134,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Basic-building-blocks">Basic building blocks<a class="anchor-link" href="#Basic-building-blocks">&#182;</a></h1><p>Below I introduce the code for searching in NK landscape, equivalent to the one from Levithnal (1997)
-For this I create a agent class. The agent is very simple, it just knows the percentage of time it can make a long jump. 
-Levinthal includes other aspects like myopia but this is not in the code at the moment.</p>
+<h1 id="Basic-building-blocks">Basic building blocks<a class="anchor-link" href="#Basic-building-blocks">&#182;</a></h1><p>Below I introduce the code for searching in NK landscape, equivalent to the one from Levithnal (1997). It builds on two main objects, the landscape and the agent. Additionally, we need to create a function to run the simulation and a couple of miscellaneous functions to make small transformations to the code. We present each in a separate section.</p>
 <h2 id="1.-Landscape">1. Landscape<a class="anchor-link" href="#1.-Landscape">&#182;</a></h2><p>An NK landscape outputs a payoff value for an input policy. It is is equivalent to getting an elevation value after providing the longitude and latitude in a map. That is the reason why it is called a landscape. However, the inputs of an NK landscape are binary thus the analogy does not go to far.<br>
 Overall, the landscape receives a policy and outputs a payoff for this policy. The policy consists in N binary values stored as a string of 0s and 1s (e.g. '101'). The payoff depends on the value of K of the NK model.</p>
 <p>K represents the amount of interdependencies that are linked to the performance of each of the N variables. In an environment where K=0, then the performance of the policy value depends only on its own value, if 0 then x0 if 1 then x1. It does not depend on the other N-1 elements. If K &gt; 0 then the payoff for this policy element depends on the value of some of the N-1 elements of the policy. If K = N-1 then the payoff of this policy element depends on the value of all the other N-1 policy element. The higher the K the higher the complexity of the interrelationships when calculating the performance of each policy.</p>
@@ -13155,11 +13153,6 @@ This requires several steps. Firts we need to obtain the keys for the fitness co
 <h3 id="1.6-Landscape-initiation">1.6 Landscape initiation<a class="anchor-link" href="#1.6-Landscape-initiation">&#182;</a></h3><p>To initiate a landscape one just needs to give the N and K value. The landscape is created with the use of the reset function.</p>
 <h3 id="1.5-Reset">1.5 Reset<a class="anchor-link" href="#1.5-Reset">&#182;</a></h3><p>The reset function creates a landscape by first building the dependency matrix, then the fitness contributions, and lastly the full-landscape from the prior two. For doing this it just requires the N and K values given at the initiation of the class.</p>
 <h3 id="1.6-Summary">1.6 Summary<a class="anchor-link" href="#1.6-Summary">&#182;</a></h3><p>The summary function outputs the maximum, minimum, and number of peaks in the landscape.</p>
-<h3 id="1.7-Miscellaneous-functions">1.7 Miscellaneous functions<a class="anchor-link" href="#1.7-Miscellaneous-functions">&#182;</a></h3><h4 id="1.7.1-Int2Pol">1.7.1 Int2Pol<a class="anchor-link" href="#1.7.1-Int2Pol">&#182;</a></h4><p>This function translates an integer value to a string of 0s and 1s. This string is made so that it has length N.
-For example 5 is translated in to '101' in the case of N=3 or '0101' in case N = 4</p>
-<h4 id="1.7.2-Transform-matrix">1.7.2 Transform matrix<a class="anchor-link" href="#1.7.2-Transform-matrix">&#182;</a></h4><p>Handles the transformation of a policy into the key values for estimating its payoff. For this it uses transform_row for every policy element.</p>
-<h4 id="1.7.3-Transform-row">1.7.3 Transform row<a class="anchor-link" href="#1.7.3-Transform-row">&#182;</a></h4><p>Uses the policy and interacts it with a row of the dependency matrix. The length of the output depends on the number of 1s in the row of the interdependency matrix. For example if the policy is '101' and the row is [0,1,1] then the output is '01'. If the row was [1,0,0] then the output would be '1'.<br>
-This transformation gives always the same value and thus can be used with the fitness contribution to estimate the payoff for each policy element.</p>
 
 </div>
 </div>
@@ -13172,22 +13165,6 @@ This transformation gives always the same value and thus can be used with the fi
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># used only for storage</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="k">def</span> <span class="nf">int2pol</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="n">pol</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
-    <span class="n">pol</span> <span class="o">=</span> <span class="n">pol</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="c1"># removes the &#39;0b&#39;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">))</span> <span class="o">+</span> <span class="n">pol</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">):</span>
-    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">))]</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_row</span><span class="p">):</span>
-    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span> <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">trans_pol</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">for</span> <span class="n">pol_i</span> <span class="ow">in</span> <span class="n">interact_row</span><span class="p">:</span> <span class="n">trans_pol</span> <span class="o">+=</span> <span class="n">pol_i</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">trans_pol</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">landscape</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">land_style</span><span class="p">):</span>
@@ -13203,12 +13180,12 @@ This transformation gives always the same value and thus can be used with the fi
         <span class="bp">self</span><span class="o">.</span><span class="n">lands</span> <span class="o">=</span> <span class="n">land</span>
     <span class="k">def</span> <span class="nf">create_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">inter_row</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># number of off-diagonals 1s and 0s</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_style</span> <span class="o">==</span> <span class="s2">&quot;Rand_mat&quot;</span><span class="p">:</span> 
-            <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">inter_row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_style</span> <span class="o">==</span> <span class="s2">&quot;Rand_row&quot;</span><span class="p">:</span> 
-                <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_style</span> <span class="o">==</span> <span class="s2">&quot;Levinthal&quot;</span><span class="p">:</span> <span class="n">inter</span> <span class="o">=</span> <span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_style</span> <span class="o">==</span> <span class="s2">&quot;Rand_row&quot;</span><span class="p">:</span> <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">inter_row</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_style</span> <span class="o">==</span> <span class="s2">&quot;Levinthal&quot;</span><span class="p">:</span> <span class="n">inter</span> <span class="o">=</span> <span class="n">inter_row</span> <span class="c1"># The original order is the one from Levinthal (1997)</span>
             <span class="n">range_row</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)[</span><span class="n">i</span><span class="p">:])</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)[:</span><span class="n">i</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">range_row</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span> 
@@ -13229,9 +13206,9 @@ This transformation gives always the same value and thus can be used with the fi
         <span class="bp">self</span><span class="o">.</span><span class="n">create_dependencies</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitness_contribution</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_landscape</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">reset_one</span><span class="p">(</span><span class="n">which_pol</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="p">[</span><span class="n">which_pol</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">int2pol</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">which_pol</span><span class="p">])):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> 
-                                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">which_pol</span><span class="p">]))}</span>
+    <span class="k">def</span> <span class="nf">reset_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which_pol</span><span class="p">):</span>
+        <span class="n">num_dep_row</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_mat</span><span class="p">[</span><span class="n">which_pol</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_con</span><span class="p">[</span><span class="n">which_pol</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">int2pol</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">num_dep_row</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_dep_row</span><span class="p">)}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_landscape</span><span class="p">()</span>        
     <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">max_global</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lands</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -13254,10 +13231,9 @@ This transformation gives always the same value and thus can be used with the fi
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="2.-Agents">2. Agents<a class="anchor-link" href="#2.-Agents">&#182;</a></h2><h3 id="2.1-Initiation">2.1 Initiation<a class="anchor-link" href="#2.1-Initiation">&#182;</a></h3><p>The agent is created by giving the probability of making a long jump instead of searching its neighbors. Everything else is done through its search function.</p>
+<h2 id="2.-Agents">2. Agents<a class="anchor-link" href="#2.-Agents">&#182;</a></h2><h3 id="2.1-Initiation">2.1 Initiation<a class="anchor-link" href="#2.1-Initiation">&#182;</a></h3><p>The agent is created by giving the probability of making a long jump instead of searching its neighbors, the position in the landscape the agent starts and the level of noise in its evaluation of distant positions in the landscape.</p>
 <h3 id="2.2-Search">2.2 Search<a class="anchor-link" href="#2.2-Search">&#182;</a></h3><p>The search function receives a landscape and the number of periods it has to search the landscape. On every periods, it has the opportunity of making a long jump and staying in the position if it has a higher payoff or searching the neighboring positions.<br>
 The agent decides to move to a new position only if the payoff is higher than the current payoff. Any change of position is logged into a short log, and even if there is no change, the current position is logged into a longer log. If the global maximum is found, then the agent stores a 1 and the period when the global maximum was reached.</p>
-<h3 id="2.3-Find-neighbors">2.3 Find neighbors<a class="anchor-link" href="#2.3-Find-neighbors">&#182;</a></h3><p>The main form of movement for the agent is local search. This implies moving to each neighboring position and staying in the first that gives a higher payoff. In order to do this the agent needs to find its neighbors. This can be done in several ways, here what we do is to morph the current position by flipping one policy element and storing it as a neighbor. We do this for every policy element to make a list of neighbors. We randomize the order of neighbors to avoid bias and use this for local search.</p>
 
 </div>
 </div>
@@ -13267,18 +13243,7 @@ The agent decides to move to a new position only if the payoff is higher than th
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_neighbors</span><span class="p">(</span><span class="n">policy</span><span class="p">):</span>
-    <span class="n">policy</span> <span class="o">=</span> <span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="c1">#policy changed </span>
-    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">random_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">random_order</span><span class="p">:</span>
-        <span class="n">neighbor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
-        <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">agent</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">agent</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">long_jump</span><span class="p">,</span> <span class="n">start_pos</span><span class="p">,</span> <span class="n">noise</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">long_jump</span> <span class="o">=</span> <span class="n">long_jump</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_pos</span> <span class="o">=</span> <span class="n">start_pos</span>
@@ -13302,10 +13267,10 @@ The agent decides to move to a new position only if the payoff is higher than th
                     <span class="k">if</span> <span class="n">lands</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">+</span> <span class="n">ruido</span> <span class="o">&gt;</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]:</span> <span class="k">break</span>
             <span class="k">elif</span> <span class="n">walk_or_jump</span> <span class="o">==</span> <span class="s2">&quot;Jump&quot;</span><span class="p">:</span> 
                 <span class="n">proposed_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lands</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="c1">#could be improved not past or current</span>
-                <span class="n">ruido</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">noise</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">proposed_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> 
-                                                                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">proposed_row</span><span class="p">))])</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">proposed_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">proposed_row</span><span class="p">))])</span>
+                <span class="n">ruido</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">noise</span><span class="o">*</span><span class="n">distance</span>
             <span class="c1"># Store new position if higher</span>
-            <span class="k">if</span> <span class="n">lands</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">+</span> <span class="n">ruido</span> <span class="o">&gt;</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">lands</span><span class="p">[</span><span class="n">proposed_row</span><span class="p">]</span> <span class="o">+</span> <span class="n">ruido</span> <span class="o">&gt;</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]:</span> <span class="c1"># same ruido as before</span>
                 <span class="n">current_row</span> <span class="o">=</span> <span class="n">proposed_row</span>
                 <span class="n">log_short</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;policy&quot;</span><span class="p">:</span><span class="n">current_row</span><span class="p">,</span> <span class="s2">&quot;payoff&quot;</span><span class="p">:</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]})</span> <span class="c1">#stores changes</span>
             <span class="n">log_long</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;policy&quot;</span><span class="p">:</span><span class="n">current_row</span><span class="p">,</span> <span class="s2">&quot;payoff&quot;</span><span class="p">:</span> <span class="n">lands</span><span class="p">[</span><span class="n">current_row</span><span class="p">]})</span> <span class="c1">#stores every period</span>
@@ -13330,7 +13295,9 @@ The agent decides to move to a new position only if the payoff is higher than th
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="3.-Run-Simulation">3. Run Simulation<a class="anchor-link" href="#3.-Run-Simulation">&#182;</a></h2><p>Having the agent and the landscape it is turn to perform the simulation. For this we use a function. This function takes the nubmer of repetitions, the number periods to simulate and the Agent and Landscape. The ismulation has two loops. One has the multiple agents searching in the same landscape and the other changes the landscape. At the end it outputs, the number of times the agents found the global maximum, the number of movements the agent did, the average periods when the maximum was reached, an array with the average payoffs received on every period, and an array of the variety of organizational forms at every period.</p>
+<h2 id="3-Miscellaneous-functions">3 Miscellaneous functions<a class="anchor-link" href="#3-Miscellaneous-functions">&#182;</a></h2><p>We need four functions that perform simple transformations to the data of the agents or the landscape.</p>
+<h3 id="3.1-Int2Pol">3.1 Int2Pol<a class="anchor-link" href="#3.1-Int2Pol">&#182;</a></h3><p>This function translates an integer value to a string of 0s and 1s. This string is made so that it has length N.
+For example 5 is translated in to '101' in the case of N=3 or '0101' in case N = 4.</p>
 
 </div>
 </div>
@@ -13340,30 +13307,160 @@ The agent decides to move to a new position only if the payoff is higher than th
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">run_simulation</span><span class="p">(</span><span class="n">num_lands</span><span class="p">,</span> <span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">):</span>
-    <span class="n">all_reached_max</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">all_num_steps</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">all_num_trials</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">all_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_lands</span><span class="p">):</span>
-        <span class="n">int_reached_max</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">int_num_steps</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">int_num_trials</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">int_policy</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span>
-            <span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">o_short</span><span class="p">,</span> <span class="n">o_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
-            <span class="n">int_reached_max</span> <span class="o">+=</span> <span class="n">reached_max</span>
-            <span class="n">int_num_steps</span> <span class="o">+=</span> <span class="n">n_step</span>
-            <span class="n">int_num_trials</span> <span class="o">+=</span> <span class="n">n_trial</span>
-            <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">all_payoffs</span><span class="p">,</span> <span class="n">o_long</span><span class="o">.</span><span class="n">payoff</span><span class="p">)</span>
-            <span class="n">int_policy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o_long</span><span class="o">.</span><span class="n">policy</span><span class="p">)</span> 
-        <span class="n">all_reached_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">int_reached_max</span><span class="p">)</span>
-        <span class="n">all_num_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">int_num_steps</span><span class="p">)</span>
-        <span class="n">all_num_trials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">int_num_trials</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span> <span class="n">all_choices</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">choice_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">choice_list</span> <span class="ow">in</span> <span class="n">int_policy</span><span class="p">]))</span>
-    <span class="k">return</span><span class="p">([</span><span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">,</span> <span class="n">all_payoffs</span><span class="p">,</span> <span class="n">all_choices</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">int2pol</span><span class="p">(</span><span class="n">pol_int</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">pol</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">pol_int</span><span class="p">)</span>
+    <span class="n">pol</span> <span class="o">=</span> <span class="n">pol</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="c1"># removes the &#39;0b&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">pol</span><span class="p">))</span> <span class="o">+</span> <span class="n">pol</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.2-Transform-matrix">3.2 Transform matrix<a class="anchor-link" href="#3.2-Transform-matrix">&#182;</a></h3><p>Handles the transformation of a policy into the key values for estimating its payoff. For this it uses transform_row for every policy element. The input is an interdependency matrix and a policy and the output are the N keys for each policy element.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">transform_matrix</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">):</span>
+    <span class="n">int_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dep_mat</span><span class="p">))]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">int_mat</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.3-Transform-row">3.3 Transform row<a class="anchor-link" href="#3.3-Transform-row">&#182;</a></h3><p>Uses the policy and interacts it with a row of the dependency matrix. The length of the output depends on the number of 1s in the row of the interdependency matrix. For example if the policy is '101' and the row is [0,1,1] then the output is '01'. If the row was [1,0,0] then the output would be '1'.<br>
+This transformation gives always the same value and thus can be used with the fitness contribution to estimate the payoff for each policy element.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">transform_row</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">dep_row</span><span class="p">):</span>
+    <span class="n">interact_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span> <span class="k">if</span> <span class="n">dep_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">trans_pol</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">pol_i</span> <span class="ow">in</span> <span class="n">interact_row</span><span class="p">:</span> <span class="n">trans_pol</span> <span class="o">+=</span> <span class="n">pol_i</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">trans_pol</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.4-Find-neighbors">3.4 Find neighbors<a class="anchor-link" href="#3.4-Find-neighbors">&#182;</a></h3><p>The main form of movement for the agent is local search. This implies moving to each neighboring position and staying in the first that gives a higher payoff. In order to do this the agent needs to find its neighbors. This can be done in several ways, here what we do is to morph the current position by flipping one policy element and storing it as a neighbor. We do this for every policy element to make a list of neighbors. We randomize the order of neighbors to avoid bias and use this for local search.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_neighbors</span><span class="p">(</span><span class="n">policy</span><span class="p">):</span>
+    <span class="n">policy</span> <span class="o">=</span> <span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="c1">#policy changed </span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">random_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">)),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">policy</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">random_order</span><span class="p">:</span>
+        <span class="n">neighbor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">neighbor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4.-Run-simulation">4. Run simulation<a class="anchor-link" href="#4.-Run-simulation">&#182;</a></h2><p>Having the agent and the landscape it is turn to define the simulation. For this we define a class that holds the different types of simulations to run. The class takes a landscape when initialized and will reset it when needed.</p>
+<h3 id="4.1-Describe">4.1 Describe<a class="anchor-link" href="#4.1-Describe">&#182;</a></h3><p>This function creates a given number of landscapes and describes the maximum, minimum, and number of peaks they have.</p>
+<h3 id="4.2-Search">4.2 Search<a class="anchor-link" href="#4.2-Search">&#182;</a></h3><p>This function has multiple agents serching the landscape and repeats this process with multiple landscapes. It takes four attributes, the number of landscapes to simulate, the number of agents that search each landscape and the number of periods each agent has to learn. The last parameter it takes is the Agent class itself. The simulation is ran by running a for-loop over every landscape and calling the search lanscape function for every landscape. After the search landscape is finished the data is stored and a new landscape is generated.</p>
+<h3 id="4.3-Search-landscape">4.3 Search landscape<a class="anchor-link" href="#4.3-Search-landscape">&#182;</a></h3><p>This function takes three attributes, an Agent class, the number of times the agent needs to search the landscape and the number of periods the agent has to search. It stores five variables. The number of time the global maximum is reached, the number of steps to reach the maximum, the number of trials before reaching the maximum, the average payoff on every period and the number of differnt configurations on every period.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">run_simulation</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Environment</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Env</span> <span class="o">=</span> <span class="n">Environment</span>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_reps</span><span class="p">):</span>
+        <span class="n">all_max</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_min</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_num_peaks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">Env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">max_val</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">peaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Env</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+            <span class="n">all_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_val</span><span class="p">)</span>
+            <span class="n">all_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">min_val</span><span class="p">)</span>
+            <span class="n">all_num_peaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">all_max</span><span class="p">,</span> <span class="n">all_min</span><span class="p">,</span> <span class="n">all_num_peaks</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_lands</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">):</span>
+        <span class="n">all_reached_max</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_num_steps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_num_trials</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">all_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_lands</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">data_landscape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_landscape</span><span class="p">(</span><span class="n">num_agents</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">)</span>
+            <span class="n">all_reached_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_landscape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">all_num_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_landscape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">all_num_trials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_landscape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">all_payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">all_payoffs</span><span class="p">,</span> <span class="n">data_landscape</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">all_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">all_choices</span><span class="p">,</span> <span class="n">data_landscape</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">,</span> <span class="n">all_payoffs</span><span class="p">,</span> <span class="n">all_choices</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">search_landscape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">):</span>
+        <span class="n">reached_max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_trials</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">policies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_agents</span><span class="p">):</span>
+            <span class="n">search_data</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">lands</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Env</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span> <span class="o">=</span> <span class="n">num_periods</span><span class="p">)</span>
+            <span class="n">reached_max</span> <span class="o">+=</span> <span class="n">search_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">num_steps</span> <span class="o">+=</span> <span class="n">search_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">num_trials</span> <span class="o">+=</span> <span class="n">search_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">payoffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">payoffs</span><span class="p">,</span> <span class="n">search_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">payoff</span><span class="p">)</span>
+            <span class="n">policies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">search_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">policy</span><span class="p">)</span> 
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span> <span class="o">+</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">diff_forms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">choice_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">choice_list</span> <span class="ow">in</span> <span class="n">policies</span><span class="p">])</span> <span class="c1"># store all different forms of one period</span>
+            <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diff_forms</span><span class="p">))</span> <span class="c1"># count number of different forms</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">reached_max</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">num_trials</span><span class="p">,</span> <span class="n">payoffs</span><span class="p">,</span> <span class="n">choices</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13381,13 +13478,14 @@ The agent decides to move to a new position only if the payoff is higher than th
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Simulation</span>
 <span class="n">num_periods</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">num_reps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_agents</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">num_lands</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_reps</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="c1"># Agent</span>
 <span class="n">long_jump</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">noise</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># no noise 0.0, low noise 0.01, high noise 0.025</span>
@@ -13395,7 +13493,7 @@ The agent decides to move to a new position only if the payoff is higher than th
 <span class="c1"># Landscape</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">land_style</span> <span class="o">=</span> <span class="s2">&quot;Levinthal&quot;</span> <span class="c1"># &quot;Levinthal&quot;, &quot;Rand_mat&quot;, &quot;Rand_row&quot;</span>
+<span class="n">land_style</span> <span class="o">=</span> <span class="s2">&quot;Rand_row&quot;</span> <span class="c1"># &quot;Levinthal&quot;, &quot;Rand_mat&quot;, &quot;Rand_row&quot;</span>
 </pre></div>
 
     </div>
@@ -13412,11 +13510,12 @@ The agent decides to move to a new position only if the payoff is higher than th
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Environment</span> <span class="o">=</span> <span class="n">landscape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">,</span> <span class="n">land_style</span><span class="p">)</span>    
 <span class="n">Alice</span> <span class="o">=</span> <span class="n">agent</span><span class="p">(</span><span class="n">long_jump</span> <span class="o">=</span> <span class="n">long_jump</span><span class="p">,</span> <span class="n">start_pos</span> <span class="o">=</span> <span class="n">start_pos</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="p">)</span>
+<span class="n">Simulation</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">Environment</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13434,7 +13533,7 @@ The agent decides to move to a new position only if the payoff is higher than th
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">reached_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">,</span> <span class="n">n_trial</span><span class="p">,</span> <span class="n">output_short</span><span class="p">,</span> <span class="n">output_long</span> <span class="o">=</span> <span class="n">Alice</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Environment</span><span class="o">.</span><span class="n">lands</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">)</span>
@@ -13451,7 +13550,7 @@ The agent decides to move to a new position only if the payoff is higher than th
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13481,28 +13580,23 @@ The agent decides to move to a new position only if the payoff is higher than th
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.671409</td>
-      <td>0000110111</td>
+      <td>0.585210</td>
+      <td>1111001100</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.674998</td>
-      <td>0000110011</td>
+      <td>0.587750</td>
+      <td>1111101100</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.702542</td>
-      <td>1000110011</td>
+      <td>0.660657</td>
+      <td>0111101100</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.725599</td>
-      <td>1100110011</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.745410</td>
-      <td>1100110101</td>
+      <td>0.737486</td>
+      <td>0010101011</td>
     </tr>
   </tbody>
 </table>
@@ -13525,16 +13619,16 @@ The agent decides to move to a new position only if the payoff is higher than th
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">all_reached_max</span><span class="p">,</span> <span class="n">all_num_steps</span><span class="p">,</span> <span class="n">all_num_trials</span><span class="p">,</span> <span class="n">all_payoffs</span><span class="p">,</span> <span class="n">all_choices</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">num_lands</span><span class="p">,</span> <span class="n">num_reps</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">,</span> <span class="n">Environment</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">% o</span><span class="s2">f time global max is reached: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">all_reached_max</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_reps</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# of steps from start: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">all_num_steps</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_reps</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# of periods to find global max: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">all_num_trials</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_reps</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computation time: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">reached_max</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">num_trials</span><span class="p">,</span> <span class="n">payoffs</span><span class="p">,</span> <span class="n">choices</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">num_lands</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">,</span> <span class="n">Alice</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">% o</span><span class="s2">f time global max is reached: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">reached_max</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_agents</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# of steps from start: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_agents</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# of periods to find global max: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">num_trials</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">num_agents</span><span class="o">*</span><span class="n">num_lands</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computation time: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; s&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13551,10 +13645,10 @@ The agent decides to move to a new position only if the payoff is higher than th
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>% of time global max is reached: 44.26
-# of steps from start: 5.8948
-# of periods to find global max: 29.6842
-Computation time: 103.63
+<pre>% of time global max is reached: 55.82
+# of steps from start: 6.1205
+# of periods to find global max: 24.8201
+Computation time: 96.02 s
 </pre>
 </div>
 </div>
@@ -13573,10 +13667,10 @@ Computation time: 103.63
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span><span class="o">*</span><span class="n">all_choices</span><span class="p">[:</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">num_lands</span><span class="o">*</span><span class="n">num_reps</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span><span class="o">*</span><span class="n">choices</span><span class="p">[:</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">num_lands</span><span class="o">*</span><span class="n">num_agents</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13589,13 +13683,13 @@ Computation time: 103.63
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.collections.PathCollection at 0xd8d8ea5d30&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x29757df240&gt;</pre>
 </div>
 
 </div>
@@ -13608,7 +13702,7 @@ Computation time: 103.63
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -13629,10 +13723,10 @@ Computation time: 103.63
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">all_payoffs</span><span class="p">[:</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">num_lands</span><span class="o">*</span><span class="n">num_reps</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="n">payoffs</span><span class="p">[:</span><span class="n">num_periods</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">num_lands</span><span class="o">*</span><span class="n">num_agents</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13645,13 +13739,13 @@ Computation time: 103.63
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.collections.PathCollection at 0xd8d8f627f0&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x2975e16630&gt;</pre>
 </div>
 
 </div>
@@ -13664,7 +13758,7 @@ Computation time: 103.63
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -13678,31 +13772,19 @@ Computation time: 103.63
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="5.-Descriptives-of-landscape">5. Descriptives of landscape<a class="anchor-link" href="#5.-Descriptives-of-landscape">&#182;</a></h2><p>Finally we create 1000 landscapes and see their characteristics. Although making 1000 landscapes takes around 3 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.</p>
+<h2 id="5.-Landscape-descriptives">5. Landscape descriptives<a class="anchor-link" href="#5.-Landscape-descriptives">&#182;</a></h2><p>Finally we create 1000 landscapes and see their characteristics. Although making 1000 landscapes takes around 3 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Environment</span> <span class="o">=</span> <span class="n">landscape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">,</span> <span class="n">land_style</span><span class="p">)</span>    
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">all_max</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">all_min</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">all_num_peaks</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span> 
-    <span class="n">Environment</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-    <span class="n">max_val</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">peaks</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-    <span class="n">all_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_val</span><span class="p">)</span>
-    <span class="n">all_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">min_val</span><span class="p">)</span>
-    <span class="n">all_num_peaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Range of payoffs: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_max</span><span class="p">),</span><span class="mi">2</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_min</span><span class="p">),</span><span class="mi">2</span><span class="p">)]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Range # of peaks: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">all_num_peaks</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_num_peaks</span><span class="p">),</span><span class="mi">2</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_num_peaks</span><span class="p">)]))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">all_num_peaks</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computation time: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">all_max</span><span class="p">,</span> <span class="n">all_min</span><span class="p">,</span> <span class="n">all_num_peaks</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">num_reps</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computation time: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; s&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13719,11 +13801,46 @@ Computation time: 103.63
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Range of payoffs: [0.72, 0.5, 0.29]
-Range # of peaks: [1, 3.64, 10]
-Computation time: 19.99
+<pre>Computation time: 89.63 s
 </pre>
 </div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">all_min</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([  8.,  13.,  52.,  69.,  94., 106.,  80.,  48.,  22.,   8.]),
+ array([0.12133891, 0.15408001, 0.18682111, 0.21956221, 0.2523033 ,
+        0.2850444 , 0.3177855 , 0.3505266 , 0.38326769, 0.41600879,
+        0.44874989]),
+ &lt;a list of 10 Patch objects&gt;)</pre>
+</div>
+
 </div>
 
 <div class="output_area">
@@ -13734,7 +13851,109 @@ Computation time: 19.99
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAD8CAYAAABn919SAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4zLCBodHRwOi8vbWF0cGxvdGxpYi5vcmcvnQurowAAC/hJREFUeJzt3VGIpfV5x/Hvr66ljaZU2VG26nRSkDRSiJZBbIVia1NstlRzEYhQWRphchFbLULZepNAbjaQmPaiCJtoXai1BDUoVdLIRpBAke4aiWs3wWC3ZnXrrkir7U2qPr2YV7JudjNnzjmz786z3w8M55z3vDP/h+PM13ffOedMqgpJ0ub3c2MPIEmaD4MuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJamJLadzsa1bt9bS0tLpXFKSNr39+/e/XlULa+13WoO+tLTEvn37TueSkrTpJfmPSfbzlIskNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCYMuiQ1cVpfKbpZLe18fJR1D+3aPsq6kjYnj9AlqQmDLklNGHRJasKgS1ITBl2SmjDoktSEQZekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJamJNYOe5LIkTyU5mOSFJLcP2z+f5JUkzw0fH9/4cSVJpzLJn6B7G7izqp5N8kFgf5Inh/u+UlVf2rjxJEmTWjPoVXUEODJcfyvJQeCSjR5MkrQ+6zqHnmQJuAp4Zth0W5LvJbkvyQVznk2StA6TnHIBIMn5wMPAHVX1ZpJ7gC8ANVx+Gfj0ST5vBVgBWFxcnMfM2mBLOx8fbe1Du7aPtra02U10hJ7kXFZj/kBVPQJQVa9V1TtV9S7wVeDqk31uVe2uquWqWl5YWJjX3JKkE0zyLJcA9wIHq+ru47ZvO263TwAH5j+eJGlSk5xyuRa4BXg+yXPDtruAm5Ncyeopl0PAZzZkQknSRCZ5lst3gJzkrifmP44kaVq+UlSSmjDoktSEQZekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCYMuiQ1YdAlqQmDLklNGHRJasKgS1ITBl2SmjDoktSEQZekJgy6JDWxZtCTXJbkqSQHk7yQ5PZh+4VJnkzy4nB5wcaPK0k6lUmO0N8G7qyqjwDXAJ9NcgWwE9hbVZcDe4fbkqSRrBn0qjpSVc8O198CDgKXADcCe4bd9gA3bdSQkqS1rescepIl4CrgGeDiqjoCq9EHLpr3cJKkyU0c9CTnAw8Dd1TVm+v4vJUk+5LsO3bs2DQzSpImMFHQk5zLaswfqKpHhs2vJdk23L8NOHqyz62q3VW1XFXLCwsL85hZknQSkzzLJcC9wMGquvu4ux4DdgzXdwCPzn88SdKktkywz7XALcDzSZ4btt0F7AK+nuRW4GXgkxszoiRpEmsGvaq+A+QUd18/33EkSdPylaKS1IRBl6QmDLokNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCYMuiQ1YdAlqQmDLklNGHRJasKgS1ITBl2SmjDoktSEQZekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJamJNYOe5L4kR5McOG7b55O8kuS54ePjGzumJGktkxyh3w/ccJLtX6mqK4ePJ+Y7liRpvdYMelU9DbxxGmaRJM1glnPotyX53nBK5oK5TSRJmsqWKT/vHuALQA2XXwY+fbIdk6wAKwCLi4tTLnd2Wtr5+NgjSNpEpjpCr6rXquqdqnoX+Cpw9c/Yd3dVLVfV8sLCwrRzSpLWMFXQk2w77uYngAOn2leSdHqsecolyYPAdcDWJIeBzwHXJbmS1VMuh4DPbOCMkqQJrBn0qrr5JJvv3YBZJEkz8JWiktSEQZekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6Qmpn37XKmVMd+q+NCu7aOtrV48QpekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCbWDHqS+5IcTXLguG0XJnkyyYvD5QUbO6YkaS2THKHfD9xwwradwN6quhzYO9yWJI1ozaBX1dPAGydsvhHYM1zfA9w057kkSes07Tn0i6vqCMBwedH8RpIkTWPLRi+QZAVYAVhcXJz664z5V9klaTOY9gj9tSTbAIbLo6fasap2V9VyVS0vLCxMuZwkaS3TBv0xYMdwfQfw6HzGkSRNa5KnLT4I/Avw4SSHk9wK7AI+luRF4GPDbUnSiNY8h15VN5/iruvnPIskaQa+UlSSmjDoktSEQZekJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCYMuiQ1YdAlqQmDLklNGHRJasKgS1ITW8YeQNI4lnY+Ptrah3ZtH23tzjxCl6QmDLokNWHQJamJmc6hJzkEvAW8A7xdVcvzGEqStH7z+KXo71bV63P4OpKkGXjKRZKamDXoBXwryf4kK/MYSJI0nVlPuVxbVa8muQh4Msn3q+rp43cYQr8CsLi4OONykqRTmekIvapeHS6PAt8Arj7JPrurarmqlhcWFmZZTpL0M0wd9CTnJfnge9eBPwAOzGswSdL6zHLK5WLgG0ne+zr/UFXfnMtUkqR1mzroVfUS8NE5ziJJmoFPW5SkJgy6JDVh0CWpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNWHQJakJgy5JTRh0SWrCoEtSEwZdkpow6JLUhEGXpCZm+RN0krSpLO18fLS1D+3avuFreIQuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmfNqiNLIxn0qnXjxCl6QmDLokNWHQJamJmYKe5IYkP0jywyQ75zWUJGn9pg56knOAvwX+ELgCuDnJFfMaTJK0PrMcoV8N/LCqXqqqHwP/CNw4n7EkSes1S9AvAX503O3DwzZJ0ghmeR56TrKtfmqnZAVYGW7+T5IfzLDmmWAr8PrYQ5xB5vp45Ivz+kqj8Hvj/U75eGzy/85TyRdn+v741Ul2miXoh4HLjrt9KfDqiTtV1W5g9wzrnFGS7Kuq5bHnOFP4ePyEj8X7+Xi83+l4PGY55fKvwOVJPpTk54FPAY/NZyxJ0npNfYReVW8nuQ34Z+Ac4L6qemFuk0mS1mWm93KpqieAJ+Y0y2bR5vTRnPh4/ISPxfv5eLzfhj8eqfqp32NKkjYhX/ovSU0Y9AkluSzJU0kOJnkhye1jzzS2JOck+W6Sfxp7lrEl+eUkDyX5/vA98ltjzzSWJH8x/IwcSPJgkl8Ye6bTKcl9SY4mOXDctguTPJnkxeHygo1Y26BP7m3gzqr6CHAN8Fnf6oDbgYNjD3GG+Bvgm1X168BHOUsflySXAH8OLFfVb7D6hIlPjTvVaXc/cMMJ23YCe6vqcmDvcHvuDPqEqupIVT07XH+L1R/Ys/aVsUkuBbYDXxt7lrEl+SXgd4B7Aarqx1X1X+NONaotwC8m2QJ8gJO8PqWzqnoaeOOEzTcCe4bre4CbNmJtgz6FJEvAVcAz404yqr8G/hJ4d+xBzgC/BhwD/m44BfW1JOeNPdQYquoV4EvAy8AR4L+r6lvjTnVGuLiqjsDqwSFw0UYsYtDXKcn5wMPAHVX15tjzjCHJHwFHq2r/2LOcIbYAvwncU1VXAf/LBv2T+kw3nBu+EfgQ8CvAeUn+ZNypzh4GfR2SnMtqzB+oqkfGnmdE1wJ/nOQQq++y+XtJ/n7ckUZ1GDhcVe/9i+0hVgN/Nvp94N+r6lhV/R/wCPDbI890JngtyTaA4fLoRixi0CeUJKyeIz1YVXePPc+YquqvqurSqlpi9Rde366qs/YorKr+E/hRkg8Pm64H/m3Ekcb0MnBNkg8MPzPXc5b+gvgEjwE7hus7gEc3YpGZXil6lrkWuAV4Pslzw7a7hlfLSn8GPDC8r9FLwJ+OPM8oquqZJA8Bz7L6zLDvcpa9YjTJg8B1wNYkh4HPAbuArye5ldX/6X1yQ9b2laKS1IOnXCSpCYMuSU0YdElqwqBLUhMGXZKaMOiS1IRBl6QmDLokNfH/I8d647QipxEAAAAASUVORK5CYII=
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">all_max</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([ 14.,  21.,  50.,  66.,  92., 106.,  89.,  36.,  23.,   3.]),
+ array([0.56332941, 0.59356259, 0.62379576, 0.65402894, 0.68426211,
+        0.71449529, 0.74472846, 0.77496164, 0.80519481, 0.83542799,
+        0.86566116]),
+ &lt;a list of 10 Patch objects&gt;)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">all_num_peaks</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([221.,  67., 133.,  35.,  28.,   5.,   3.,   4.,   2.,   2.]),
+ array([ 1. ,  2.5,  4. ,  5.5,  7. ,  8.5, 10. , 11.5, 13. , 14.5, 16. ]),
+ &lt;a list of 10 Patch objects&gt;)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -13748,7 +13967,7 @@ Computation time: 19.99
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Levinthal (1997) includes more analyzes. These are yet to be implemented here. In the future, I will add the myopic jumping as this is important for the paper.</p>
+<p>Levinthal (1997) includes more analyzes in specific on competition dynamics. This tutorial does not include them. Competition is a more general process. The main theoretical contribution of Levinthal (1997) was the introduction of NK models and that is what this paper presents.</p>
 <p><strong>Note:</strong> The code below produced the table of contents.</p>
 
 </div>
@@ -13756,7 +13975,7 @@ Computation time: 19.99
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
@@ -13779,10 +13998,10 @@ Computation time: 19.99
 
 
 
-<div id="5b782457-5d2d-4a90-a031-cb98a8d21f84"></div>
+<div id="8892315f-8a53-4a12-8cef-9c10d278b78e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#5b782457-5d2d-4a90-a031-cb98a8d21f84');
+var element = $('#8892315f-8a53-4a12-8cef-9c10d278b78e');
 $.getScript('https://kmahelona.github.io/ipython_notebook_goodies/ipython_notebook_toc.js')
 
 </script>
