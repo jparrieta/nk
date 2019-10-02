@@ -22,13 +22,14 @@
 
 import numpy as np
 import pandas as pd
+import random 
 import matplotlib.pyplot as plt
 
 def create_dependencies(n, k, land_style):
     dep_mat = np.zeros((n,n)).astype(int)
     inter_row = [1]*k+[0]*(n-k-1) # number of off-diagonals 1s and 0s
     if land_style == "Rand_mat": 
-        inter = np.random.choice(inter_row*n, replace = False, size = n*(n-1))
+        inter = random.sample(inter_row*n, n*(n-1))
     for i in range(n):
         if land_style == "Rand_row": inter = np.random.choice(inter_row, replace = False, size = (n-1))
         elif land_style == "Levinthal": inter = inter_row # The original order is the one from Levinthal (1997)
@@ -118,7 +119,7 @@ int2pol(pol_int = 5, n = 4)
 def fitness_contribution(dep_mat):
     fit_con = []
     for i in range(len(dep_mat)): 
-        epi_row = {int2pol(j,sum(dep_mat[i])): np.random.random() for j in range(2**sum(dep_mat[i]))}
+        epi_row = {int2pol(j,sum(dep_mat[i])): random.random() for j in range(2**sum(dep_mat[i]))}
         fit_con.append(epi_row)
     return(fit_con)
 
@@ -203,16 +204,17 @@ lands
 # We can characterize the environment. Find the maximum, minimum, number of peaks.  
 # For this we need a function that finds the peaks, which has to find whether a policy gives the highest performance for every neighbor. 
 # #### 4.3.1 FInd neighbors
-# For every policy there are N neighboring positions. These are policies that differ by one change from the current policy. The function shown here takes the starting policy and generates at random the N neighbors. It outputs the integer value of each of these N neighbors. The neighbors are given at random becuase this is useful for the search algorithm. It is not necessary here but does not affect the code. 
+# For every policy there are N neighboring positions. These are policies that differ by one change from the current policy. The function shown here takes the starting policy and generates at random the N neighbors. It outputs the integer value of each of these N neighbors. The code asks if the neighbors will be given in a random or list order. This is useful during search.  
 # Below you see an example. 
 
 # In[9]:
 
 
-def find_neighbors(policy):
+def find_neighbors(policy, randomizer):
     policy = (policy) #policy changed 
     neighbors = []
-    random_order = np.random.choice(range(len(policy)), replace = False, size = len(policy))
+    if randomizer: random_order = random.sample(range(len(policy)), len(policy)) # 10x faster than np.random.choice!
+    else: random_order = range(len(policy))
     for i in random_order:
         neighbor = list(policy)
         if policy[i] == '1': neighbor[i] = '0'
@@ -220,7 +222,7 @@ def find_neighbors(policy):
         neighbors.append(''.join(neighbor))
     return(neighbors)
 
-find_neighbors('101')
+find_neighbors('101', False)
 
 
 # #### 4.3.1 Summary
@@ -231,16 +233,15 @@ find_neighbors('101')
 
 
 def summary(lands):
-    max_global = max(lands.values())
-    min_global = min(lands.values())
     num_peaks = 0
     for current_row in lands.keys():
-        randomized_neighbors = find_neighbors(current_row)
-        counter = 0
-        for neighbor in randomized_neighbors:
-            if lands[current_row] < lands[neighbor]: counter += 1
-        if counter == 0: num_peaks += 1
-    return([max_global, min_global, num_peaks])
+        counter = 1
+        for neighbor in find_neighbors(current_row, randomizer = False):
+            if lands[current_row] < lands[neighbor]: 
+                counter = 0
+                break
+        num_peaks += counter
+    return([max(lands.values()), min(lands.values()), num_peaks])
 
 summary(lands)
 
@@ -289,7 +290,7 @@ for i in range(num_reps):
     all_max.append(max_val)
     all_min.append(min_val)
     all_num_peaks.append(peaks)
-print("Computation time: "+ str(round(time.time()-start_time, 2)) + " s")
+print("Computation time: " + str(round(time.time()-start_time, 2)) + " s")
 
 
 # In[14]:
@@ -316,7 +317,7 @@ plt.hist(all_num_peaks)
 #   
 # **Note:** The code below builds the table of content.
 
-# In[18]:
+# In[17]:
 
 
 get_ipython().run_cell_magic('javascript', '', "$.getScript('https://kmahelona.github.io/ipython_notebook_goodies/ipython_notebook_toc.js')")
