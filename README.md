@@ -1,4 +1,4 @@
-# bandits
+# nk
 This repo includes the code for running some of the seminal papers on organizational learning under complexity.    
 
 Currently, it includes the code for creating landscapes a lá Levinthal (1997).
@@ -12,9 +12,10 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 **Link:** https://mybinder.org/v2/gh/jparrieta/nk/master
 
 # log  
-  
-**191001:** Code 10x faster.  
+
+**191002:** Code 10x faster.  
+**191001:** Removed second order slow-down.  
 **190930:** Separated the create landscape tutorial from the full Levinthal (1997) tutorial.  
 **190929:** Optimized search procedure.  
 **190927:** Included the search functionality. Still no myopia.  
-**190916:** Added the landscape building functionality. Search is not working at the moment.
+**190916:** Added the landscape building functionality. Search is not working at the moment.  
