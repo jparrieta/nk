@@ -17,7 +17,7 @@
 # The k interdependencies in Levinthal's are created at random. Basically, one needs a matrix where the diagonal has a 1 and the off-diagonal has k ones and n-k zeroes. A one represents an interdependency and a zero the lack of it.  
 # This function includes two variables N and K and outputs a NxN interdependency matrix. 
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -45,7 +45,7 @@ def create_dependencies(n, k, land_style):
 # ### 1.1 Example: How to create a interdependency matrix
 # Below you see how an interdependency matrix is built. If you run the code again, the matrix will change. 
 
-# In[2]:
+# In[246]:
 
 
 n = 3
@@ -60,12 +60,11 @@ dep_mat
 # This is a miscellaneous function. It is presented here to avoid confusion. It will be use by the next functions.  
 # This function takes an integer value and outputs a string of 0s and 1s of length N. This is important as the binary function of Python truncates any zero to the left of the most significant 1. 
 
-# In[3]:
+# In[247]:
 
 
 def int2pol(pol_int, n):
-    pol = bin(pol_int)
-    pol = pol[2:] # removes the '0b'
+    pol = bin(pol_int)[2:] # removes the '0b'
     if len(pol) < n: pol = '0'*(n-len(pol)) + pol
     return(pol)
 
@@ -113,17 +112,18 @@ int2pol(pol_int = 5, n = 4)
 # The next step is entering a for-loop over the N rows of the interdependency matrix. For each iteration in the for-loop, we do a list comprehension where the binary value of the counter is stored as the key of a dictionary with the value drawn from a uniform distribution. The second for-loop will go over 2^q iterations, where q is the number of 1's in the row. As in the example=, q is on average k+1 but not always. At the end the function output a list of with the dictionaries as its entry.  
 # You see the code below and the outputs is the list of dictionaries of the dependency matrix created in the prior section. 
 
-# In[4]:
+# In[248]:
 
 
-def fitness_contribution(dep_mat):
+def fitness_contribution(dep_mat, land_style, k):
     fit_con = []
-    for i in range(len(dep_mat)): 
-        epi_row = {int2pol(j,sum(dep_mat[i])): random.random() for j in range(2**sum(dep_mat[i]))}
-        fit_con.append(epi_row)
+    for i in range(len(dep_mat)):
+        if  land_style != "Rand_mat": q = k+1
+        elif land_style == "Rand_mat": q = sum(dep_mat[i])
+        fit_con.append({int2pol(j,q):random.random() for j in range(2**q)})
     return(fit_con)
 
-fit_con = fitness_contribution(dep_mat)
+fit_con = fitness_contribution(dep_mat, land_style, k)
 fit_con
 
 
@@ -139,7 +139,7 @@ fit_con
 # The process starts by starting trans_pol = 0. This value will store the key value for the dictionary. Then a for-loop starts. The for-loop has the range reversed so that the we keep the items to the left of the list being more significant. This is important because in the the next step we multiply the value of interact_row[i] with the 2^index value. By reversing the order we have that the item most to left in the list will be multiplied by 2^3 if we follow the example from before, the item next to it by 2^2 and so on. The product of the multiplications is added on every loop to the trans_pol value. At the end we have a decimal value. We transform the decimal value and the output is a key we can use in the dictionaries from the fitness contribution. For example for the first row from before we get '1', for the second '01', and for the last row, '101'.  
 # Below you see an example of this function for the same policy we have used in this example but for the randomly generate dependency matrix from before.  
 
-# In[5]:
+# In[249]:
 
 
 def transform_row(policy, dep_row):
@@ -154,7 +154,7 @@ transform_row('101', dep_mat[1])
 # ### 3.2 Transform Matrix
 # The transform_row function is called by a transform_matrix function whose job is to take a policy and output a set of keys for the the list of fitness contributions. To do this basically what it does is to to call the transform_row N times can fill out a list with the output of each of the calls of the function. In the example from above we would have: ['0b0',  '0b11', '0b101'] as an output. Below you see an example of the function working.  
 
-# In[6]:
+# In[250]:
 
 
 def transform_matrix(policy, dep_mat):
@@ -167,7 +167,7 @@ transform_matrix('101',dep_mat)
 # ### 3.3 Payoff
 # The payoff function has three inputs, the policy for which to calculate a payoff, the interdependency matrix, and the list of fitness contributions.  The first action it does it to transform the policy into keys to the fitness cotnribution dictionaries. After this is done it sums the entries of all the fitness contributions of the key values and divides the sum by the length of the policy. The last part is done to get a value between 0 and 1. Below we see and example of the code working. 
 
-# In[7]:
+# In[251]:
 
 
 def payoff(policy,dep_mat,fit_con):
@@ -185,13 +185,12 @@ payoff('101',dep_mat,fit_con)
 # Having the translating function, the function that calculates the landscape is just a for-loop that fills up a dataframe. The dataframe consists of three entries per policy: The policy in list-value, the policy in integer-value, and the payoff. The integer value of the policy is used for accessing the dataframe, the list-value for searching the landscape.   
 # Below you will see an example.  
 
-# In[8]:
+# In[252]:
 
 
 def calc_landscape(dep_mat, fit_con):
     land = {}
-    n = len(fit_con)
-    for i in range(2**n):
+    for i in range(2**len(fit_con)):
         pol = int2pol(i,n)
         land[pol] = payoff(pol, dep_mat, fit_con)
     return(land)
@@ -207,7 +206,7 @@ lands
 # For every policy there are N neighboring positions. These are policies that differ by one change from the current policy. The function shown here takes the starting policy and generates at random the N neighbors. It outputs the integer value of each of these N neighbors. The code asks if the neighbors will be given in a random or list order. This is useful during search.  
 # Below you see an example. 
 
-# In[9]:
+# In[253]:
 
 
 def find_neighbors(policy, randomizer):
@@ -229,7 +228,7 @@ find_neighbors('101', False)
 # This functions gives a summary of the landscape. The maximum, minimum, and number of peaks. It is most useful for collecting statistics of different landscape configurations (i.e., different n and ks).
 # 
 
-# In[10]:
+# In[254]:
 
 
 def summary(lands):
@@ -250,20 +249,20 @@ summary(lands)
 #   
 # Below you can find the short way of creating the landscape from scratch
 
-# In[11]:
+# In[255]:
 
 
 n = 6
 k = 2
 land_style = "Rand_row" # "Levinthal", "Rand_mat", "Rand_row"
 dep_mat = create_dependencies(n, k, land_style)
-fit_con = fitness_contribution(dep_mat)
+fit_con = fitness_contribution(dep_mat,land_style,k)
 Environment = calc_landscape(dep_mat, fit_con)    
 
 summary(Environment)
 
 
-# In[12]:
+# In[256]:
 
 
 Environment
@@ -273,7 +272,7 @@ Environment
 #   
 # Below we characterize a thousand landscapes by describing their maxima, minima, and number of peaks 
 
-# In[13]:
+# In[257]:
 
 
 import time
@@ -284,7 +283,7 @@ all_num_peaks = []
 num_reps = 1000
 for i in range(num_reps): 
     dep_mat = create_dependencies(n, k, land_style)
-    fit_con = fitness_contribution(dep_mat)
+    fit_con = fitness_contribution(dep_mat, land_style, k)
     Environment = calc_landscape(dep_mat, fit_con)   
     max_val, min_val, peaks = summary(Environment)
     all_max.append(max_val)
@@ -293,19 +292,19 @@ for i in range(num_reps):
 print("Computation time: " + str(round(time.time()-start_time, 2)) + " s")
 
 
-# In[14]:
+# In[258]:
 
 
 plt.hist(all_min)
 
 
-# In[15]:
+# In[259]:
 
 
 plt.hist(all_max)
 
 
-# In[16]:
+# In[260]:
 
 
 plt.hist(all_num_peaks)

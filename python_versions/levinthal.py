@@ -57,9 +57,7 @@
 
 
 import numpy as np
-import pandas as pd # used only for storage
 import random # random.sample is 10x faster than np.random.choice!
-import matplotlib.pyplot as plt
 
 class landscape:
     def __init__(self, n, k, land_style):
@@ -81,7 +79,8 @@ class landscape:
         for i in range(self.n):
             if self.land_style == "Rand_row": inter = random.sample(inter_row, self.n-1)
             elif self.land_style == "Levinthal": inter = inter_row # The original order is the one from Levinthal (1997)
-            range_row = list(range(self.n)[i:])+list(range(self.n)[:i])
+            range_row = list(range(self.n))
+            range_row = range_row[i:]+range_row[:i]
             for j in range_row:
                 if i != j: 
                     self.dep_mat[i][j] = inter[0]
@@ -89,21 +88,22 @@ class landscape:
                 else: self.dep_mat[i][i] = 1
     def fitness_contribution(self):
         self.fit_con = []
-        for i in range(self.n): 
-            epi_row = {int2pol(j,sum(self.dep_mat[i])): random.random() 
-                       for j in range(2**sum(self.dep_mat[i]))}
-            self.fit_con.append(epi_row)
+        for i in range(self.n):
+            if  self.land_style != "Rand_mat": q = self.k+1
+            elif self.land_style == "Rand_mat": q = sum(self.dep_mat[i])
+            self.fit_con.append({int2pol(j,q):random.random() for j in range(2**q)})
+        return(self.fit_con)
     def payoff(self, policy):
         keys = transform_matrix(policy, self.dep_mat)
-        pay = np.sum([self.fit_con[i][keys[i]]/len(policy) for i in range(len(policy))])
+        pay = np.sum([self.fit_con[i][keys[i]]/self.n for i in range(self.n)])
         return(pay)
     def reset(self):
         self.create_dependencies()
         self.fitness_contribution()
         self.calc_landscape()
     def reset_one(self, which_pol):
-        num_dep_row = sum(self.dep_mat[which_pol])
-        self.fit_con[which_pol] = {int2pol(i,num_dep_row): random.random() for i in range(2**num_dep_row)}
+        q = sum(self.dep_mat[which_pol])
+        self.fit_con[which_pol] = {int2pol(i,q): random.random() for i in range(2**q)}
         self.calc_landscape()        
     def summary(self):
         num_peaks = 0
@@ -139,16 +139,17 @@ class agent:
         if self.start_pos == "Minimum": current_row = min(lands, key=lands.get)
         elif self.start_pos == "Random": current_row = random.sample(lands.keys(),1)[0]
         # Initialize logs and find maximum
+        policy_short = [current_row]
+        policy_long = [current_row]
+        payoff_short = [lands[current_row]]
+        payoff_long = [lands[current_row]]
         global_max = max(lands, key=lands.get)
-        log_short = [{"policy":current_row, "payoff":lands[current_row]}]
-        log_long = [{"policy":current_row, "payoff":lands[current_row]}]
         # Start search
         for j in range(num_periods):
             # Local search or Jump?
             walk_or_jump = np.random.choice(["Walk", "Jump"], p = [1-long_jump, long_jump])
             if walk_or_jump == "Walk":
-                randomized_neighbors = find_neighbors(policy = current_row, randomizer = True)
-                for proposed_row in randomized_neighbors:
+                for proposed_row in find_neighbors(policy = current_row, randomizer = True):
                     ruido = (random.random()-0.5)*self.noise # just 1 difference
                     if lands[proposed_row] + ruido > lands[current_row]: break
             elif walk_or_jump == "Jump": 
@@ -158,19 +159,26 @@ class agent:
             # Store new position if higher
             if lands[proposed_row] + ruido > lands[current_row]: # same ruido as before
                 current_row = proposed_row
-                log_short.append({"policy":current_row, "payoff": lands[current_row]}) #stores changes
-            log_long.append({"policy":current_row, "payoff": lands[current_row]}) #stores every period
+                policy_short.append(current_row)
+                payoff_short.append(lands[current_row])
+            policy_long.append(current_row)
+            payoff_long.append(lands[current_row])
             # Check if search is finished
             if current_row == global_max:
                 if j < num_periods-1: # somehow the & did not work
                     for k in range(num_periods-j-1): 
-                        log_long.append({"policy":current_row, "payoff": lands[current_row]}) # fill after maximum is found
+                        policy_long.append(current_row)
+                        payoff_long.append(lands[current_row])
                     break # stop the main for-loop after global maximum is found
         # Store data
-        log_short.append({"policy":global_max, "payoff": lands[global_max]}) # add global max for comparison later on
-        log_long.append({"policy":global_max, "payoff": lands[global_max]}) # add global max for comparison later on
+        policy_short.append(global_max) # add global max for comparison later on
+        policy_long.append(global_max)
+        payoff_short.append(lands[global_max])
+        payoff_long.append(lands[global_max])
         reached_max = 1*(current_row == global_max)
-        return([reached_max, len(log_short)-1, j, pd.DataFrame(log_short), pd.DataFrame(log_long)])
+        num_steps = len(policy_short)-1
+        num_trials = j+1
+        return([reached_max, num_steps, num_trials, [policy_short, payoff_short], [policy_long, payoff_long]])
 
 
 # ## 3 Miscellaneous functions  
@@ -184,8 +192,7 @@ class agent:
 
 
 def int2pol(pol_int, n):
-    pol = bin(pol_int)
-    pol = pol[2:] # removes the '0b'
+    pol = bin(pol_int)[2:] # removes the '0b'
     if len(pol) < n: pol = '0'*(n-len(pol)) + pol
     return(pol)
 
@@ -222,10 +229,10 @@ def transform_row(policy, dep_row):
 
 
 def find_neighbors(policy, randomizer):
-    policy = (policy) #policy changed 
     neighbors = []
-    if randomizer: random_order = random.sample(range(len(policy)), len(policy))
-    else: random_order = range(len(policy))
+    n = len(policy)
+    if randomizer: random_order = random.sample(range(n), n)
+    else: random_order = range(n)
     for i in random_order:
         neighbor = list(policy)
         if policy[i] == '1': neighbor[i] = '0'
@@ -290,8 +297,8 @@ class run_simulation:
             reached_max += search_data[0]
             num_steps += search_data[1]
             num_trials += search_data[2]
-            payoffs = np.add(payoffs, search_data[4].payoff)
-            policies.append(search_data[4].policy) 
+            payoffs = np.add(payoffs, search_data[4][1])
+            policies.append(search_data[4][0]) 
         for j in range(num_periods + 2):
             diff_forms = set([choice_list[j] for choice_list in policies]) # store all different forms of one period
             choices.append(len(diff_forms)) # count number of different forms
@@ -310,7 +317,7 @@ class run_simulation:
 num_periods = 50
 num_agents = 100
 num_lands = 100
-num_reps = 1000
+num_reps = 500
 # Agent
 long_jump = 0.1
 noise = 0.0 # no noise 0.0, low noise 0.01, high noise 0.025
@@ -337,8 +344,9 @@ Simulation = run_simulation(Environment)
 # In[10]:
 
 
+import pandas as pd 
 reached_max, n_step, n_trial, output_short, output_long = Alice.search(Environment.lands, num_periods)
-output_short
+pd.DataFrame({'policy': output_short[0], 'payoff': output_short[1]})
 
 
 # ## 4. Run simulation
@@ -362,6 +370,7 @@ print("Computation time: " + str(round(time.time()-start_time,2)) + " s")
 # In[12]:
 
 
+import matplotlib.pyplot as plt
 plt.scatter(range(num_periods+2), 100*choices[:num_periods+2]/(num_lands*num_agents))
 
 
@@ -376,7 +385,7 @@ plt.scatter(range(num_periods+2), payoffs[:num_periods+2]/(num_lands*num_agents)
 
 # ## 5. Landscape descriptives  
 # 
-# Finally we create 1000 landscapes and see their characteristics. Although making 1000 landscapes takes around 3 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.
+# Finally we create 500 landscapes and see their characteristics. Although making 1000 landscapes takes around 3 seconds, estimating their characteristics takes one order of magnitude longer. This is not a crucial step so I have not optimized it, yet.
 
 # In[14]:
 
@@ -404,7 +413,7 @@ plt.hist(all_max)
 plt.hist(all_num_peaks)
 
 
-# Levinthal (1997) includes more analyzes in specific on competition dynamics. This tutorial does not include them. Competition is a more general process. The main theoretical contribution of Levinthal (1997) was the introduction of NK models and that is what this paper presents. 
+# Levinthal (1997) includes more analyzes in specific on competition dynamics. This tutorial does not include them. Competition is a more general process. The main theoretical contribution of Levinthal (1997) was the introduction of NK models and that is what this tutorial presents. 
 # 
 # **Note:** The code below produced the table of contents.
 
