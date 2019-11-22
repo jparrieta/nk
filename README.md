@@ -1,7 +1,7 @@
 # nk
 This repo includes the code for running some of the seminal papers on organizational learning under complexity.    
 
-Currently, it includes the code for creating landscapes a lá Levinthal (1997).
+Currently, it includes the code for creating landscapes a lá Levinthal (1997). The code is presented in two ways. The levinthal_create_landscape.ipynb introduces the logic used to create NK landscapes. The levinthal.ipynb replicates Dan's 1997 paper.  
 
 The next code to be included is the myopic jump logic after that Csaszar and Levinthal (2016).
 
