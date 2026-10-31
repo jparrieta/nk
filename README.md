@@ -14,6 +14,7 @@ It takes a while to load. After loading, click any \*.ipynb  and you will be abl
 # log  
 
 **261031:** Added nk_qca.ipynb: K = 0, 1, 2 matrices reduced by relabeling, Walsh support, QCA prime implicants, identifiability tests.  
+**261031:** Added nk_qca_n10.ipynb: N = 10, K = 1, 2, 4, prime implicants by dynamic programming over 3^N cubes.  
 
 **191002:** Code 10x faster!, a.k.a never use np.random.choice.  
 **191001:** Sped up from quadratic to linear time in N and K.  
